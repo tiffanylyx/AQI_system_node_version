@@ -545,18 +545,18 @@ for (i in data){
         .style("font-size", "10px")
         .style("text-decoration", "underline")
         .style("fill", "blue") // Style the text to look like a link
-        const bbox = DP_info.node().getBBox();
+
+        const bbox = DP_group.node().getBBox();
         const textWidth = bbox.width;
         const textHeight = bbox.height;
-
         DP_group.attr("text-anchor", "middle").attr("transform", function(){
               var indicate = 1
               if (Math.cos(Math.PI+angleScale(data[i].Type))>0){
                 indicate = 1}
               else{indicate = -1}
-            return `translate(${-indicate*textWidth*0.3},${indicate*(textHeight+20)})`})
+            return `translate(${-textWidth/1.25},${indicate*(textHeight+25)})`})
             .on('click',function(){
-              console.log("Open_Info_Card: DP")
+              console.log("Home_page: Open_Info_Card: DP")
               event.stopPropagation();
               var overlay_DP = document.getElementById('overlay_DP');
             // Show the overlay

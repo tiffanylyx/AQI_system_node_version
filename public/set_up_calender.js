@@ -158,6 +158,7 @@ const health = status.append('span')
 const DP_text = status.append('span')
     .attr('class', 'pollutant-text-right')
 function create_rosa(date,data_select,info){
+  d3.select("#year-view-header").style("display","none")
   var data = []
   var typesArray = data_select.map(item => item.Type);
 

@@ -85,6 +85,7 @@ data.forEach(function(d) {
         .attr("width", gridSize)
         .attr("height", gridSize)
     group.on("click",function(){
+        d3.select("#year-view-header").style("display","block")
         console.log(d3.select(this).attr("class"))
         select_year = d3.select(this).attr("class")
         create_year(data, info)
@@ -124,7 +125,34 @@ yAxis.selectAll("text")
     .style("text-anchor", "end")
     .attr("transform", "translate(-6," + gridSize / 3+ ")")
     .attr("class","note")
+    d3.select('#prev-year-btn').on('click', function() {
+      console.log("back-year")
+        // Decrement the month and update year if needed
+        select_year--;
+        if (select_year < 2014) {
+            select_year = 2014;
+        }
+        create_year(data, info)
+    });
+    
+    // Click event handler for the next month button
+    d3.select('#next-year-btn').on('click', function() {
+        console.log("next-month")
+        // Increment the month and update year if needed
+        select_year++;
+        if (select_year > 2023) {
+            select_year = 2023;
+        }
+        create_year(data, info)
+    });
+    d3.select('#back-to-all-years-btn').on('click', function() {
+      console.log("back-to-all-years")
+      d3.select("#year-view-header").style("display","none")
+      d3.select("#calendar").style("display","none")
+      d3.select("#year_view").style("display","block")
+      d3.select("#color_bar").style("display","block")
 
+    })
 
 const parsedData = groupedData.map(d => ({
   date: parseDate(d[0]),

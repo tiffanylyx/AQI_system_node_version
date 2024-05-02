@@ -36,6 +36,9 @@ Promise.all([
 
 });
 function create_year(data, info){
+  d3.select("#calendar").style("display","block")
+  d3.select("#year-title").text(select_year)
+  d3.select("#year-view-header").style("display","block")
   d3.select("#daily_chart").style("display","none")
   d3.select("#explain_text").style("display","block")
   d3.select("#right-div").style("width","70%")
@@ -43,8 +46,8 @@ function create_year(data, info){
   container = d3.select('#calendar');
 
   // Get the width of the container div
-  containerWidth = container.node().getBoundingClientRect().width;
-  containerHeight = container.node().getBoundingClientRect().height;
+  containerWidth = screen.width*0.6;
+  containerHeight = screen.height*0.8;
 
   const gridWidth = (containerWidth)/3;
   const gridHeight = containerHeight/1.7;
@@ -177,8 +180,11 @@ for(i in calendarArray){
   var data_for_day = []
   if(calendarArray[i]>0){
     data_for_day = monthData.filter(d => d.Date.getDate() === calendarArray[i])
-    create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,screen.width/(65*bar_height(300)),dayWidth,dayHeight,'False')
-  }
+    if(data_for_day.length>0){
+      create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,screen.width/(65*bar_height(300)),dayWidth,dayHeight,'False')
+
+    }
+      }
 
 }
 }
@@ -316,8 +322,18 @@ containerHeight = container.node().getBoundingClientRect().height;
 
     if(calendarArray[i]>0){
       data_for_day = monthData.filter(d => d.Date.getDate() === calendarArray[i])
-      create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
-    }
+      if(data_for_day.length>0){
+        create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+      }
+      else{
+        cell.append("text").attr("x", dayWidth / 2)
+        .attr("y", dayHeight/2+10)
+        .attr("text-anchor", "middle")
+        .text("Missing")
+        .style("fill","#999999")
+        .style("font-size",30)
+        }
+      }
 
 
 }

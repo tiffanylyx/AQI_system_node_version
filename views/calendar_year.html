@@ -78,7 +78,7 @@
               </div>
             </div>
             </div>
-        <span id="close-icon" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:24px; padding-top:10px;padding-right:24px;">&times;</span>
+        <span id="close-icon" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding:20px;">&times;</span>
         <p id = "note_card" > 1/2 </p>
     </div>
 
@@ -88,7 +88,7 @@
             <div style="display: flex; justify-content: center; align-items: center; padding:60px;">
               <img src="illustration/DP_card.png" style="width:95%;">
             </div>
-        <span id="close-icon-DP" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:24px; padding-top:10px;padding-right:24px;">&times;</span>
+        <span id="close-icon-DP" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding:20px;">&times;</span>
       </div>
     </div>
     <div id="overlay_color" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
@@ -96,7 +96,7 @@
          <div style="display: flex; justify-content: center; align-items: center; padding-top: 40px;padding-bottom: 80px;">
           <img src="illustration/color.png" style="width:90%;">
         </div>
-        <span id="close-icon-color" style="position:absolute; top:0; right:0; cursor:pointer; font-size:24px; font-weight:bold; padding-top:10px;padding-right:24px;">&times;</span>
+        <span id="close-icon-color" style="position:absolute; top:0; right:0; cursor:pointer; font-size:36px; font-weight:bold; padding:20px;">&times;</span>
       </div>
     </div>
     <div id="explain_text" style="padding:1vh 4vw;">
@@ -124,16 +124,22 @@
     </div>
 </div>
 <div class="right-div" id = "right-div">
-  <div class="calendar-header" id="calendar-header" style="display:none">
-  <button id="back-to-year-btn">Back to Year</button>
-  <button id="prev-month-btn">❮</button>
-  <span id="calendar-title">August 2023</span>
-  <button id="next-month-btn">❯</button>
-</div>
-<div id = 'color_bar'>
-</div>
-<div class = 'year_view' id = 'year_view' >
-</div>
+  <div class="header" id="year-view-header" style="display:none">
+    <button class = "back-btn" id="back-to-all-years-btn">Back to All Years</button>
+    <button class= "prev-btn" id="prev-year-btn">❮</button>
+    <span class = "header-title" id="year-title">2023</span>
+    <button class= "next-btn" id="next-year-btn">❯</button>
+  </div>
+  <div class="header" id="calendar-header" style="display:none">
+    <button class = "back-btn" id="back-to-year-btn">Back to Year</button>
+    <button class= "prev-btn" id="prev-month-btn">❮</button>
+    <span  class = "header-title" id="calendar-title">August 2023</span>
+    <button class= "next-btn" id="next-month-btn">❯</button>
+  </div>
+  <div id = 'color_bar'>
+  </div>
+  <div class = 'year_view' id = 'year_view' >
+  </div>
   <div id = 'calendar'>
   </div>
   <!-- Content for right div -->
