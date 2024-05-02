@@ -21,7 +21,6 @@ const container = d3.select('#bar_chart');
 // Get the width of the container div
 const containerWidth = container.node().getBoundingClientRect().width;
 const containerHeight = container.node().getBoundingClientRect().height;
-console.log(containerHeight)
 const margin = {top: 0, right: 0, bottom: 0, left: 0},
     width = containerWidth - margin.left - margin.right,
     height = containerHeight - margin.top - margin.bottom,
@@ -91,7 +90,6 @@ function resetTimer(duration) {
   timer = setTimeout(() => {
     document.getElementById('nextButton').click(); // Programmatically click the next button
   }, duration); // Set a new timer for 45 seconds
-  console.log(duration)
 }
 resetTimer(len)
 // Load both files concurrently
@@ -180,7 +178,6 @@ Promise.all([
 
   // Function to run the function at the current index
   function runFunctionAtIndex() {
-    console.log(currentIndex)
       const functionObject = functionsArray[currentIndex];
       functionObject.func.apply(null, functionObject.args);
   }
@@ -203,6 +200,7 @@ Promise.all([
 
   // Modified event listener for the next button
   document.getElementById('nextButton').addEventListener('click', () => {
+    console.log("Explain: Click next button")
     if (currentIndex < functionsArray.length - 1) { // Check if currentIndex is less than the last index
       currentIndex++;} // Increment currentIndex}
     else if (currentIndex==functionsArray.length-1){
@@ -211,7 +209,6 @@ Promise.all([
       runFunctionAtIndex();
       updateProgressIndicator(); // Call this function to update the visual progress indicator
     if(currentIndex==functionsArray.length-1){
-      console.log("hhhhh")
       len = 15000
     }
     
@@ -219,6 +216,7 @@ Promise.all([
 
   // Modified event listener for the previous button
   document.getElementById('previousButton').addEventListener('click', () => {
+    console.log("Explain: Click previous button")
     if (currentIndex > 0) { // Check if currentIndex is greater than 0
       currentIndex--; // Decrement currentIndex
       runFunctionAtIndex();
@@ -229,6 +227,7 @@ Promise.all([
 
 })
 function raw_number(data,info){
+  console.log("Explain: raw_number")
   len = 8000
   barwidth = 160
   padding_bar = 120
@@ -308,6 +307,7 @@ function raw_number(data,info){
 }
 
 function create_number(date, data, info){
+  console.log("Explain: create_number")
   raw_number(data,info)
 
   explain_text.append('tspan')
@@ -354,6 +354,7 @@ text_box
 
 }
 function change_AQI(){
+  console.log("Explain: change_AQI")
   explain_text.text('For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 -- 500 based on a math equation.')
   .call(wrapText, text_length);
   bbox = explain_text.node().getBBox();
@@ -403,6 +404,7 @@ else{
   labels2.style('opacity',1).attr("fill", 'black')
 }
 function color_code(date, data, info){
+  console.log("Explain: color_code")
   next = 0
   explain_text.text('And then color-code the number according to the new value to represent how harmful the pollution situation is to our life.')
 .call(wrapText, text_length);
@@ -439,6 +441,7 @@ text_box
     .attr("y",0)
 }
 function create_bar(date, data, info){
+  console.log("Explain: create_bar")
   back = 0
   explain_text.text('What if for each pollutant we create a bar, and use the AQI value as each bar’s height? ')
   .call(wrapText, text_length);
@@ -448,7 +451,7 @@ function create_bar(date, data, info){
   text_box
       .attr('y', bbox.y - padding_v / 2)
       .attr('height', textHeight + padding_v)
-  console.log('create_bar')
+  
   bars
   .transition()
   .duration(1000)
@@ -475,6 +478,7 @@ labels2
 info_group.selectAll("*").remove()
 }
 function move_bar(date, data, info,distance){
+console.log("Explain: move_bar")
 explain_text.text('And of AQI of Day will take the WORST case, which is the highest AQI score among all the pollutants. The pollutant that has the highest AQI is the Driver Pollutant of the day.')
 .call(wrapText, text_length);
 bbox = explain_text.node().getBBox();
@@ -496,7 +500,7 @@ info_group.selectAll("*").remove()
     return `translate(${(i-5/2)*(padding_bar+barwidth)-50},0)`;
   });
 
-  console.log('move_bar')
+
   bars
   .attr("stroke", function(d){
     if(d.Type==DP){
@@ -596,8 +600,9 @@ info_group
 }
 
 function stack(distance,info){
+  console.log("Explain: stack")
   back = 1
-  console.log('stack')
+  
   explain_text.text(function(){
     return 'The AQI of the day is '+AQI_value+', which is '+color_level(AQI_value)+' for people!'
   })
@@ -670,6 +675,7 @@ function stack(distance,info){
 }
 
 function add_rosa(date,data,info){
+  console.log("Explain: add_rosa")
   explain_text
   .text('We can further arrange the bars in to a circle by rounding the x-axis. Now the daily AQI is represented in the flower-like shape.')
   .call(wrapText, text_length)
@@ -679,7 +685,7 @@ function add_rosa(date,data,info){
   text_box
       .attr('y', bbox.y - padding_v / 2)
       .attr('height', textHeight + padding_v)
-  console.log('add_rosa')
+
   function blinkBar(index,blinkCount) {
     blinkDuration = 500
     const numberOfBlinks = 1;
@@ -1082,6 +1088,7 @@ circle_bar.attr('transform', `translate(${width*0.7}, ${height*0.45}) scale(${sc
 circle_bar.append("rect").attr("width",900).attr("height",700)
 .attr("x",-450).attr("y",-350).attr("fill","blue").attr("opacity",0)
 .on('click', function() {
+  console.log("Explain: jump to homepage")
   // Redirect to another HTML page on the same domain
   window.location.href = 'index.html';
 });
@@ -1174,10 +1181,10 @@ function color_level(d){
 }
 
 function openOverlay(buttonText,info) {
+  console.log("Explain: Open_Info_Card: "+buttonText)
   var overlay = document.getElementById('overlay');
 
   var overlayContent = document.getElementById('overlay-content1');
-  console.log(info)
 
   // Set the content of the overlay based on the button's text
   document.querySelector('#overlay-content1 h2').textContent = info.Full + ' ('+info.Name + ')';
@@ -1237,8 +1244,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                content2.contains(event.target) ||
                                overlay2.contains(event.target) ||
                                overlay3.contains(event.target)
-    console.log(isClickInsideOverlay,isAnyOverlayVisible,overlay.style.display !== 'none',overlayDP.style.display !== 'none',overlayColor.style.display !== 'none')
-
     if (!isClickInsideOverlay && isAnyOverlayVisible) {
       closeOverlay();
     }
@@ -1246,6 +1251,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showDivLayout() {
+  console.log("Explain: Info_card_filp")
   var content1 = document.getElementById('overlay-content1');
   var content2 = document.getElementById('overlay-content2');
   var note_card = document.getElementById('note_card');  
@@ -1267,6 +1273,7 @@ document.addEventListener('click', function(event) {
   resetTimer(len)})
 
   document.getElementById('color_bar').addEventListener('click', function(){
+    console.log("Explain: Open_Info_Card: Color")
     event.stopPropagation();
     document.getElementById('overlay_color').style.display = 'block';
   });
