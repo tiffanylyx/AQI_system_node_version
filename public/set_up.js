@@ -38,7 +38,7 @@ function getFormattedDateTime() {
     hour = hour ? hour : 12; // the hour '0' should be '12'
     const minutes = now.getMinutes().toString().padStart(2, '0');
 
-    return  `${month} ${date}${suffix}, ${year}, updated at ${hour}:00 ${ampm}`;
+    return  `${month} ${date}${suffix}, ${year}, ${hour}:00 ${ampm}`;
 }
 function getCurrentDate() {
     const today = new Date();
@@ -202,7 +202,7 @@ var layer3 = circle_bar.append('g');
 
 
 const floatingDiv = d3.select('#daily_chart').append('div')
-    .attr('class', 'floating-div');
+    .attr('class', 'floating-base floating-div');
 
 const date_text = floatingDiv.append('div')
     .attr('class', 'date-text')
@@ -546,15 +546,16 @@ for (i in data){
         .style("text-decoration", "underline")
         .style("fill", "blue") // Style the text to look like a link
 
-        const bbox = DP_group.node().getBBox();
+        const bbox = DP_info.node().getBBox();
         const textWidth = bbox.width;
         const textHeight = bbox.height;
+        console.log(textHeight,textWidth)
         DP_group.attr("text-anchor", "middle").attr("transform", function(){
               var indicate = 1
               if (Math.cos(Math.PI+angleScale(data[i].Type))>0){
                 indicate = 1}
               else{indicate = -1}
-            return `translate(${-textWidth/1.25},${indicate*(textHeight+25)})`})
+            return `translate(20,${indicate*(textHeight+25)})`})
             .on('click',function(){
               console.log("Home_page: Open_Info_Card: DP")
               event.stopPropagation();
@@ -565,7 +566,7 @@ for (i in data){
 }
 }
 
-date_text.text(text_to_display(date));
+date_text.text(getFormattedDateTime());
 AQI_text.text('AQI: '+AQI_value).style('fill',color_fill(AQI_value));
 health.text(color_type(AQI_value));
 

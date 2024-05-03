@@ -1,5 +1,5 @@
 body, html {
-  font-family: Inter, sans-serif;
+  font-family: Arial, sans-serif;
   overflow: hidden;
   background-color:#ffffff;
   margin: 0;
@@ -74,178 +74,137 @@ content {
 }
 
 
-.floating-div {
-    position: fixed;
-    top: 16vh;
-    left:80vw;
-    background-color: #ffffff;
-    width:14%;
-    padding:6px;
+/* Base class for all floating elements with common properties */
+.floating-base {
+  position: fixed;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(81,81,81, 0.25);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  width: 14%; /* Consider adjusting if different for specific cases */
+}
 
-    box-shadow: 0 0 10px rgba(81,81,81, 0.25);
-    border-radius: 8px;
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+.floating-div-info {
+  top: 64vh; 
+  left: 80vw;
+  height:23vh;
+  background-color: #FFF5CB; /* Specific background for this div */
+  align-items: flex-start; /* This will align child elements to the start of the cross axis if needed */
 }
-.floating-div-left {
-    position: fixed;
-    top: 16%;
-    left:9%;
-    width:13%;
-    padding:6px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(81,81,81, 0.25);
-    border-radius: 8px;
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.floating-div-info p{
+  color: #5F4E18; /* Sets the text color */
+  font-size: 16px; /* Sets the text font size */
+  text-align: left;
+  margin: 0;
+  height:100%;
+  /* Removed align-items: left; because it's not valid. 
+     Adjust align-items only if needed for flex items alignment: */
 }
+/* Positioning for specific floating divs */
+.floating-div { top: 16vh; left: 80vw; padding: 6px;}
+.floating-div-left { top: 16%; left: 9%; width: 13%; padding: 6px;}
+.floating-legend { top: 34.5vh; left: 80vw; display: block; max-width: 90%; padding-top: 20px; padding-left:24px; }
+.floating-legend-left { top: 16%; left: 34%; width: 12.5%; display: block; max-width: 90%; }
+/* Styling for text elements */
+.aqi-value, .date-text, .text-info, .pollutant-text-left, .pollutant-text-right {
+  font-family: sans-serif;
+}
+
 .aqi-value {
-    font-size: 32px;
-    font-weight: bold;
-    margin: 5px 0;
-    padding-bottom: 16px;
-    padding-top: 16px;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 5px 0;
+  padding-bottom: 16px;
+  padding-top: 16px;
 
 }
 .date-text {
-  padding-left: 20px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  width:100%;
-    font-size: 18px;
-    font-weight: 400;
-    margin: 2px 0;
-    border-bottom: 1px solid #e2e2e2;
+padding-left: 20px;
+padding-top: 16px;
+padding-bottom: 16px;
+width:100%;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 2px 0;
+  border-bottom: 1px solid #e2e2e2;
 
 }
 .text-info {
 
-  padding-bottom: 10px;
-  color:#656565;
+padding-bottom: 10px;
+color:#656565;
 
 }
 .pollutant-text-left {
-    font-size: 14px;
-    font-weight: 400;
-    vertical-align: top;
-    display: inline-block; /* or 'block' depending on your layout needs */
-     max-width: 130px; /* Set your desired width */
-     word-wrap: break-word; /* Allows long words to wrap and break onto the next line */
-     text-align: center;
-     color:#656565;
-   }
+  font-size: 14px;
+  font-weight: 400;
+  vertical-align: top;
+  display: inline-block; /* or 'block' depending on your layout needs */
+   max-width: 130px; /* Set your desired width */
+   word-wrap: break-word; /* Allows long words to wrap and break onto the next line */
+   text-align: center;
+   color:#656565;
+ }
 .separator {
-  display: inline-block;
-  vertical-align: top; /* Centers the dot vertically */
-  margin: 0 8px; /* Adjust the margin to control spacing around the dot */
-  margin-top: -8px;
-  font-size:30px;
-  color:black;
+display: inline-block;
+vertical-align: top; /* Centers the dot vertically */
+margin: 0 8px; /* Adjust the margin to control spacing around the dot */
+margin-top: -8px;
+font-size:30px;
+color:black;
 }
 .pollutant-text-right {
-    font-size: 14px;
-    font-weight: 400;
-    margin-left:4px;
-    vertical-align: top;
-}
-
-.floating-legend {
-  position: fixed;
-  top: 34.5vh;
-  left:80vw;
-  display: block; /* Change from flex to block to allow the default list styling */
-  padding-top: 20px;
-  padding-left:24px;
-  padding-bottom:10px; 
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(81,81,81, 0.25);
   font-size: 14px;
-  width:14%; /* Ensure the width is as per content */
-  max-width: 90%; /* Optional: to ensure it doesn't get too wide */
+  font-weight: 400;
+  margin-left:4px;
+  vertical-align: top;
 }
 
-.floating-legend ul {
-  list-style-type: none; /* Removes default list bullet */
-  padding: 0; /* Removes default padding */
-  margin: 0; /* Removes default margin */
-}
-
-.floating-legend li {
-  margin-bottom: 12px; /* Increase space between lines. Adjust value as needed */
-  padding-left: 30px; /* Add padding for inline-block circle */
-  position: relative; /* Needed for absolute positioning of the circle */
-}
-
+/* Indicator styling */
 .indicator {
-  height: 15px; /* Size of the circle */
-  width: 15px; /* Size of the circle */
-  border-radius: 50%; /* Makes the indicator a circle */
-  display: inline-block; /* Allows us to set a width and height */
-  position: absolute; /* Positions the circle absolutely within the li */
-  left: 0; /* Aligns the circle to the far left of the li */
-  top: 50%; /* Centers the circle vertically */
-  transform: translateY(-50%); /* Fine-tunes the vertical centering */
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* Specific colors for each indicator type */
-.good {
-  background-color: #34B274;
+.good { background-color: #34B274; }
+.moderate { background-color: #FDD000; }
+.unhealthy-sg { background-color: #F4681A; }
+.unhealthy { background-color: #D3112E; }
+.very-unhealthy { background-color: #8854D0; }
+.hazardous { background-color: #731425; }
+
+/* Additional classes for list styling */
+.floating-legend ul, .floating-legend-left ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-.moderate {
-  background-color: #FDD000;
+.floating-legend li, .floating-legend-left li {
+  margin-bottom: 12px;
+  padding-left: 30px;
+  position: relative;
 }
 
-.unhealthy-sg {
-  background-color: #F4681A;
+.separator {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 8px;
+  margin-top: -8px;
+  font-size: 30px;
+  color: black;
 }
-
-.unhealthy {
-  background-color: #D3112E;
-}
-
-.very-unhealthy {
-  background-color: #8854D0;
-}
-
-.hazardous {
-  background-color: #731425;
-}
-.floating-legend-left {
-  position: fixed;
-  top: 16%;
-  left:34%;
-  display: block; /* Change from flex to block to allow the default list styling */
-  padding-top: 20px;
-  padding-left:24px;
-  padding-bottom:10px; 
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(81,81,81, 0.25);
-  font-size: 14px;
-  width: 12.5%; /* Ensure the width is as per content */
-  max-width: 90%; /* Optional: to ensure it doesn't get too wide */
-}
-
-.floating-legend-left ul {
-  list-style-type: none; /* Removes default list bullet */
-  padding: 0; /* Removes default padding */
-  margin: 0; /* Removes default margin */
-}
-
-.floating-legend-left li {
-  margin-bottom: 12px; /* Increase space between lines. Adjust value as needed */
-  padding-left: 30px; /* Add padding for inline-block circle */
-  position: relative; /* Needed for absolute positioning of the circle */
-}
-
 
 
 .container {
@@ -592,6 +551,13 @@ p {
      margin-bottom: 20px; /* Space after the header */
      font-weight: 500;
    }
+   h2 {
+    color: #00529B; /* Blue color for the header */
+    font-size: 26px; /* Size of the font */
+    margin-bottom: 10px; /* Space after the header */
+    font-weight: 500;
+    margin-right:20px;
+  }
 
 
    p {
