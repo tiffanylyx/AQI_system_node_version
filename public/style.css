@@ -90,9 +90,9 @@ content {
 
 
 .floating-div-info {
-  top: 64vh; 
+  top: 56vh; 
   left: 80vw;
-  height:23vh;
+  height:21vh;
   background-color: #FFF5CB; /* Specific background for this div */
   align-items: flex-start; /* This will align child elements to the start of the cross axis if needed */
 }
