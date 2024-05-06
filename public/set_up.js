@@ -477,20 +477,28 @@ for (i in data){
 
             } )
   //.style('filter', 'url(#drop-shadow)');
-  text_group.on('click',function(event){
+  text_group.on('click',function(){
     event.stopPropagation();
     text = d3.select(this).select('text').text().split(' ')
+    var value = text.at(-1);
     text.pop();
     var newtext = text.join(' ')
 
     var a = newtext.split('(')
     a.pop()
     newtext = a.join(' ')
-    
-
-    for(i in info){
-      if(info[i].Full===newtext.slice(0, -1)){
-        openOverlay(newtext,info[i])
+    if(value=='Missing'){
+      console.log("Calendar: Open_Info_Card: Missing")
+      event.stopPropagation();
+      var overlay_Missing = document.getElementById('overlay_Missing');
+    // Show the overlay
+    overlay_Missing.style.display = 'block';
+    }
+    else{
+      for(i in info){
+        if(info[i].Full===newtext.slice(0, -1)){
+          openOverlay(newtext,info[i])
+        }
       }
     }
   })
@@ -735,6 +743,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('overlay_DP').style.display = 'none';
     document.getElementById('overlay_color').style.display = 'none';
+    document.getElementById('overlay_Missing').style.display = 'none';   
     var content1 = document.getElementById('overlay-content1');
     var content2 = document.getElementById('overlay-content2');
     content1.style.display = 'block';
@@ -747,26 +756,31 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('close-icon').addEventListener('click', closeOverlay);
   document.getElementById('close-icon-DP').addEventListener('click', closeOverlay);
   document.getElementById('close-icon-color').addEventListener('click', closeOverlay);
+  document.getElementById('close-icon-Missing').addEventListener('click', closeOverlay); 
   // Close the overlay when clicking outside
   document.addEventListener('click', function(event) {
     var overlay = document.getElementById('overlay');
     var overlayDP = document.getElementById('overlay_DP');
     var overlayColor = document.getElementById('overlay_color');
+    var overlayMissing = document.getElementById('overlay_Missing');
     var content1 = document.getElementById('overlay-content1');
     var content2 = document.getElementById('overlay-content2');
     var overlay2 = document.getElementById('overlay2');
     var overlay3 = document.getElementById('overlay3');
+    var overlay4 = document.getElementById('overlay4');    
 
     // Check if any overlay is currently displayed
     var isAnyOverlayVisible = (overlay.style.display !== 'none') ||
                               (overlayDP.style.display !== 'none') ||
-                              (overlayColor.style.display !== 'none');
+                              (overlayColor.style.display !== 'none')||
+                              (overlayMissing.style.display !== 'none');
 
     // Determine if the click was outside all overlays
     var isClickInsideOverlay = content1.contains(event.target) ||
                                content2.contains(event.target) ||
                                overlay2.contains(event.target) ||
-                               overlay3.contains(event.target)
+                               overlay3.contains(event.target) ||
+                               overlay4.contains(event.target) 
 
     if (!isClickInsideOverlay && isAnyOverlayVisible) {
       closeOverlay();

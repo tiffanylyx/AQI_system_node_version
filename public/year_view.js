@@ -29,7 +29,7 @@ const scales = colorRanges.slice(0, -1).map((range, i) => {
   containerWidth = screen.width*0.6//container.node().getBoundingClientRect().width;
 containerHeight = screen.height*0.8//container.node().getBoundingClientRect().height;
 
-  const view_type = "gradient"
+  const view_type = "type"
   const step = 10
   const show_pie = 0
   const gridSize = containerWidth/60,svg_year = d3.select(".year_view").append("svg").attr("width",1600).attr("height",gridSize*10*10.5)
@@ -72,7 +72,7 @@ data.forEach(function(d) {
     };
 }, d => d.date);
     const group = svg_year.append("g").attr("transform",`translate(60,${50+gridSize*10*i})`).attr("class",year)
-    group.append("text").text(year).attr("x",0).attr("y",-10).attr("text-anchor","end").attr("font-size",20)
+    group.append("text").text(year).attr("x",0).attr("y",-10).attr("text-anchor","end").attr("font-size",24).attr("fill","#838383")
 
     const cards = group.selectAll(".hour")
         .data(groupedData)

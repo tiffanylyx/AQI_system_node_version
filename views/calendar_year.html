@@ -99,6 +99,14 @@
         <span id="close-icon-color" style="position:absolute; top:0; right:0; cursor:pointer; font-size:36px; font-weight:bold; padding:20px;">&times;</span>
       </div>
     </div>
+    <div id="overlay_Missing" style="display:none; position:fixed; top:12%; left:7.5%; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100;">
+      <div id="overlay4" style="position:relative; background:#fff; margin:10% auto; width:50%;border-radius: 15px;height:50vh;">
+            <div style="display: flex; justify-content: center; align-items: center; padding:60px;">
+              <img src="illustration/Missing_Data.png" style="width:95%;">
+            </div>
+        <span id="close-icon-Missing" style="color:#888888;position:absolute; top:0; right:0; cursor:pointer; font-size:36px; padding:20px;">&times;</span>
+      </div>
+    </div>
     <div id="explain_text" style="padding:1vh 4vw;">
       <div class="header-container">
         <h2>2014-2023</h2>
@@ -114,7 +122,7 @@
 
     <div id = 'daily_chart'  style="height:100%;flex-grow: 1;display:none;">
 
-    <div class="floating-legend-left" id="floating-legend-left">
+      <div class="floating-base floating-legend-left" id ="floating-legend-left" >
 
       <ul>
         <li><span class="indicator good"></span>Good</li>
@@ -129,18 +137,18 @@
 </div>
 <div class="right-div" id = "right-div">
   <div class="header" id="year-view-header" style="display:none">
-    <button class = "back-btn" id="back-to-all-years-btn">Back to All Years</button>
+    <button class = "back-btn" id="back-to-all-years-btn" style = "position: absolute; left: 38vw;"> < Back to Years</button>
     <button class= "prev-btn" id="prev-year-btn">❮</button>
     <span class = "header-title" id="year-title">2023</span>
     <button class= "next-btn" id="next-year-btn">❯</button>
   </div>
   <div class="header" id="calendar-header" style="display:none">
-    <button class = "back-btn" id="back-to-year-btn">Back to Year</button>
+    <button class = "back-btn" id="back-to-year-btn"style = "position: absolute; left: 49.6vw;">< Back to Months</button>
     <button class= "prev-btn" id="prev-month-btn">❮</button>
     <span  class = "header-title" id="calendar-title">August 2023</span>
     <button class= "next-btn" id="next-month-btn">❯</button>
   </div>
-  <div id = 'color_bar'>
+  <div id = 'color_bar'style="display:none" >
   </div>
   <div class = 'year_view' id = 'year_view' >
   </div>
