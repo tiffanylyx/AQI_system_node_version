@@ -128,7 +128,7 @@ Promise.all([
   for(i in data){
     if(!allTime.includes(data[i].Date_org)){allTime.push(data[i].Date_org);}
   }
-  var date = allTime[select_date]
+  var date = '08/24/2023'
 
   var data_select = [];
   for(i in data){
@@ -1090,7 +1090,7 @@ circle_bar.append("rect").attr("width",900).attr("height",700)
 .on('click', function() {
   console.log("Explain: jump to homepage")
   // Redirect to another HTML page on the same domain
-  window.location.href = 'index.html';
+  window.location.href = '/';
 });
 }
 
