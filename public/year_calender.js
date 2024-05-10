@@ -181,8 +181,13 @@ for(i in calendarArray){
   if(calendarArray[i]>0){
     data_for_day = monthData.filter(d => d.Date.getDate() === calendarArray[i])
     if(data_for_day.length>0){
-      create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,screen.width/(65*bar_height(300)),dayWidth,dayHeight,'False')
+      if(chart_type=='circular'){
+        create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,screen.width/(50*bar_height(300)),dayWidth,dayHeight,'False')
 
+      }
+      else{
+        create_bar_small(data_for_day[0].Date_org,data_for_day,cell,info,screen.width/(40*bar_height(300)),dayWidth,dayHeight,'False')
+      }
     }
       }
 
@@ -323,7 +328,17 @@ containerHeight = container.node().getBoundingClientRect().height;
     if(calendarArray[i]>0){
       data_for_day = monthData.filter(d => d.Date.getDate() === calendarArray[i])
       if(data_for_day.length>0){
-        create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+        if(chart_type=='circular'){
+          create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+  
+        }
+        else{
+          size = screen.width/(20*bar_height(300))
+          create_bar_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
+  
+        }
+
+        //create_rosa_small(data_for_day[0].Date_org,data_for_day,cell,info,size,dayWidth,dayHeight,'True')
       }
       else{
         cell.append("text").attr("x", dayWidth / 2)
@@ -338,7 +353,13 @@ containerHeight = container.node().getBoundingClientRect().height;
 
 }
 data_for_day = monthData.filter(d => d.Date.getDate() === dayOfMonth)
-create_rosa((1+select_month).toString()+"/"+dayOfMonth+"/2023",data_for_day,info)
+if(chart_type=='circular'){
+  create_rosa((1+select_month).toString()+"/"+dayOfMonth+"/2023",data_for_day,info)
+}
+else{
+  create_bar((1+select_month).toString()+"/"+dayOfMonth+"/2023",data_for_day,info)
+}
+
 d3.select('#prev-month-btn').on('click', function() {
   console.log("back-month")
     // Decrement the month and update year if needed
@@ -377,6 +398,93 @@ d3.select('#back-to-year-btn').on('click', function() {
   create_year(data, info)
 })
 }
+function create_bar_small(date,data_select,group,info,size,width,height,click){
+  AQI_value = 0
+  let move_y = 60
+  barwidth = 40
+  var data = []
+  var typesArray = data_select.map(item => item.Type);
+
+  for(i in types){
+    if(typesArray.includes(types[i])){
+    data.push({'Type':types[i],
+    'Value': parseInt(data_select.find(item => item.Type === types[i]).Value,10)})
+  }
+  else{
+    data.push({'Type':types[i],
+    'Value': 0})
+  }
+}
+var padding_bar = 0
+
+const circle_bar = group.append('g').attr("id",'circle_bar').attr("transform",`translate(${width/2+10}, ${height*0.55})`)
+var layer1 = circle_bar.append('g').attr("id",'layer1');
+var layer2 = circle_bar.append('g').attr("id",'layer2');
+var layer3 = circle_bar.append('g').attr("id",'layer3')
+barGroups = layer3
+
+.selectAll('g')
+.data(data)
+.enter()
+.append('g')
+.attr("transform", function(d,i) {
+  return `translate(${(i-5/2)*(padding_bar+barwidth)-50},${move_y})`;
+})
+
+// Append a rect to each group
+bars = barGroups.append('rect')
+.attr('x', 0)
+  .attr('y', d => -bar_height_bar(d.Value, outerRadius, innerRadius ))
+  .attr('rx', barwidth / 10) // Rounded corners
+  .attr('ry', barwidth / 10) // Rounded corners
+  .attr('width', barwidth)
+  .attr('height', d => bar_height_bar(d.Value, outerRadius, innerRadius ))
+  .attr('fill', function(d){
+    if(AQI_value < parseInt(d.Value)){
+      AQI_value = parseInt(d.Value)
+      DP = d.Type
+    }
+    return color_fill(d.Value, view_type)
+  })
+  .attr("stroke", function(d){
+    if(d.Type==DP){
+      return 'Black'
+    }
+    else{ return 'None'}
+  })
+  .attr("stroke-width", function(d){
+    if(d.Type==DP){
+      return 8
+    }
+    else{ return 0}
+  })
+
+
+
+
+AQI_y =-bar_height_bar(AQI_value, outerRadius, innerRadius )+move_y
+  AQI_line_0 = layer1
+  .append("line")
+  .attr("x1",(3)*(padding_bar+barwidth))
+  .attr("x2",(-3)*(padding_bar+barwidth))
+       .attr("y1",AQI_y)
+       .attr("y2",AQI_y)
+        .attr("stroke", color_fill(AQI_value,view_type)) // arrow.attr can also be used as a getter
+        .attr("fill", color_fill(AQI_value,view_type))
+        .attr("stroke-width", 10)
+        .attr("opacity",0)
+layer1.attr('transform', `scale(${size})`)
+layer2.attr('transform', `scale(${size})`)
+layer3.attr('transform', `scale(${size})`)
+if(click=='True'){
+
+  group.on("click", function(){
+    create_bar(date,data,info)
+      svg_calender.selectAll('#edge').style('fill',"#ffffff")
+    group.select('#edge').style('fill',"#DCEBFE")
+  })}
+
+}
 function create_rosa_small(date,data,group,info,size,width,height,click){
   barwidth = 25
   AQI_value = 0
@@ -399,7 +507,7 @@ const bars = layer3
       AQI_value = parseInt(d.Value)
       DP = d.Type
     }
-    return color_fill(d.Value)
+    return color_fill(d.Value,view_type)
   })
   .attr("stroke", function(d){
     if(d.Type==DP){
@@ -428,7 +536,7 @@ const AQI_mark =  layer2.append('circle')
 //.attr("fill",color_fill(AQI_value))
 .attr("fill",'none')
 //.style('fill-opacity',0.3)
-.attr("stroke",color_fill(AQI_value))
+.attr("stroke",color_fill(AQI_value,view_type))
 .attr("stroke-width",10)
 
 
@@ -464,15 +572,3 @@ function bar_height(d, max, min){
   return res*0.85+barwidth
 }
 
-function color_fill(d){
-  if(d<51){
-    return '#34B274';}
-  else if (d<101){return '#FDD000';}
-  else if (d<151){return '#F4681A';}
-  else if (d<201){return '#D3112E';}
-  else if (d<301){return '#8854D0';}
-  else if (d<501){return '#731425';}
-  else if (d=='Missing'){
-    return '#bbbbbb'
-  }
-}

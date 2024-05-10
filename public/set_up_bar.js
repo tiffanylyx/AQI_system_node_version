@@ -425,7 +425,7 @@ text_box
         AQI_value = parseInt(d.Value)
         DP = d.Type
       }
-      return color_fill(d.Value)
+      return color_fill(d.Value,view_type)
     })
     .attr("stroke", 'None')
 
@@ -578,8 +578,8 @@ AQI_line_0 = info_group
      .attr("x2",(-5/2)*(padding_bar+barwidth)-75)
      .attr("y1",AQI_y)
      .attr("y2",AQI_y)
-      .attr("stroke", color_fill(AQI_value)) // arrow.attr can also be used as a getter
-      .attr("fill", color_fill(AQI_value))
+      .attr("stroke", color_fill(AQI_value,view_type)) // arrow.attr can also be used as a getter
+      .attr("fill", color_fill(AQI_value,view_type))
       .attr("stroke-width", 5)
       .attr("opacity",1)
 AQI_text_0 = info_group.append("text")
@@ -588,7 +588,7 @@ AQI_text_0 = info_group.append("text")
 .attr("y",AQI_y-20 )
 .attr("text-anchor", "middle")
 .text("AQI = "+AQI_value)
-.attr('fill',color_fill(AQI_value))
+.attr('fill',color_fill(AQI_value,view_type))
 .attr("opacity",1)
 info_group
 .attr("transform", `translate(0,-900)`)
@@ -604,7 +604,7 @@ function stack(distance,info){
   back = 1
   
   explain_text.text(function(){
-    return 'The AQI of the day is '+AQI_value+', which is '+color_level(AQI_value)+' for people!'
+    return 'The AQI of the day is '+AQI_value+', which is '+color_type(AQI_value)+' for people!'
   })
   .call(wrapText, text_length);
   bbox = explain_text.node().getBBox();
@@ -787,7 +787,7 @@ const bars = layer3
       AQI_value = parseInt(d.Value)
       DP = d.Type
     }
-    return color_fill(d.Value)
+    return color_fill(d.Value,view_type)
   })
   .attr("stroke", function(d){
     if(d.Type==DP){
@@ -822,7 +822,7 @@ const AQI_mark =  layer2.append('circle')
 .attr('cy', 0)
 .attr('r',bar_height(AQI_value, outerRadius, innerRadius ))
 .attr("fill","none")
-.attr("stroke",color_fill(AQI_value))
+.attr("stroke",color_fill(AQI_value,view_type))
 .attr("stroke-width",6)
 .style('opacity',0)
 .transition()
@@ -841,7 +841,7 @@ const lines = layer1.append("g")
   .attr('y2', -bar_height(AQI_value, outerRadius, innerRadius )-buttun_line_padding)
   .attr('x2', 0)
   .attr('transform', d => `rotate(${calculateRotation(d)})`)
-  .attr('stroke', d => color_fill(d.Value))
+  .attr('stroke', d => color_fill(d.Value,view_type))
   .attr("stroke-width",3)
   .style("stroke-dasharray", ("5, 5"))
   .style('opacity',0)
@@ -953,7 +953,7 @@ for (i in data){
           }
         }
         else{
-          return color_fill(data[i].Value)
+          return color_fill(data[i].Value,view_type)
         }
       })
       .style("font-weight", "bold")
@@ -982,7 +982,7 @@ for (i in data){
       .attr('height', textHeight + padding_v)
       .style('fill', function(){
         if(data[i].Type==DP){
-          return color_fill(data[i].Value)
+          return color_fill(data[i].Value,view_type)
         }
         else{
           return 'white'
@@ -990,7 +990,7 @@ for (i in data){
       } )
       .style('stroke', function(){
         if(data[i].Type!=DP){
-          return color_fill(data[i].Value)
+          return color_fill(data[i].Value,view_type)
         }
         else{
           return 'Black'
@@ -1030,7 +1030,7 @@ for (i in data){
     DP_info = DP_group.append("text").attr("x",106).attr("y",5);
     DP_group.append("path")
     .attr("d", "M0,-7 L10,-7 L20,0 L10,7 L-5,7 L-5,-7 Z") // Triangle path with the tip centered at (0,0)
-    .attr("fill", color_fill(AQI_value))
+    .attr("fill", color_fill(AQI_value,view_type))
     .style("opacity",0)
     .transition()
     .delay(function() {
@@ -1060,7 +1060,7 @@ for (i in data){
     .attr("dy", "1")        
     .text(" Driver Pollutant")
     .style("font-weight", "bold")
-    .style("fill", color_fill(AQI_value)); // Style the text color
+    .style("fill", color_fill(AQI_value,view_type)); // Style the text color
 
 
       const bbox = DP_group.node().getBBox();
@@ -1114,16 +1114,6 @@ function bar_height(d, max, min){
   return res*0.85+barwidth
 }
 
-function color_fill(d){
-  if(d<51){
-    return '#34B274';}
-  else if (d<101){return '#FDD000';}
-  else if (d<151){return '#F4681A';}
-  else if (d<201){return '#D3112E';}
-  else if (d<301){return '#8854D0';}
-  else if (d<501){return '#731425';}
-}
-
 function text_to_display(dateString){
   // Function to parse the date in m/d/y format
 const parseDate = d3.timeParse("%m/%d/%y");
@@ -1170,16 +1160,6 @@ function wrapText(text, width) {
 }
 
 
-function color_level(d){
-  if(d<51){
-    return 'Good';}
-  else if (d<101){return 'Moderate';}
-  else if (d<151){return 'Unhealthy for Sensitive Groups';}
-  else if (d<201){return 'Unhealthy';}
-  else if (d<301){return 'Very Unhealthy';}
-  else if (d<501){return 'Hazardous';}
-}
-
 function openOverlay(buttonText,info) {
   console.log("Explain: Open_Info_Card: "+buttonText)
   var overlay = document.getElementById('overlay');
@@ -1200,55 +1180,7 @@ function openOverlay(buttonText,info) {
   overlay.style.display = 'block';
 
 }
-document.addEventListener('DOMContentLoaded', function() {
-  // Function to close the overlay
-  function closeOverlay() {
-    console.log('clos')
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('overlay_DP').style.display = 'none';
-    document.getElementById('overlay_color').style.display = 'none';
-    var content1 = document.getElementById('overlay-content1');
-    var content2 = document.getElementById('overlay-content2');
-    content1.style.display = 'block';
-    content2.style.display = 'none';
-    var note_card = document.getElementById('note_card');  
-    note_card.textContent = "1/2"
-  }
 
-  // Set up the close icon event listener
-  document.getElementById('close-icon').addEventListener('click', closeOverlay);
-  document.getElementById('close-icon-DP').addEventListener('click', closeOverlay);
-  document.getElementById('close-icon-color').addEventListener('click', closeOverlay);
-  document.getElementById('floating-legend').addEventListener('click', function(){
-    event.stopPropagation();
-    document.getElementById('overlay_color').style.display = 'block';
-  });
-
-  // Close the overlay when clicking outside
-  document.addEventListener('click', function(event) {
-    var overlay = document.getElementById('overlay');
-    var overlayDP = document.getElementById('overlay_DP');
-    var overlayColor = document.getElementById('overlay_color');
-    var content1 = document.getElementById('overlay-content1');
-    var content2 = document.getElementById('overlay-content2');
-    var overlay2 = document.getElementById('overlay2');
-    var overlay3 = document.getElementById('overlay3');
-
-    // Check if any overlay is currently displayed
-    var isAnyOverlayVisible = (overlay.style.display !== 'none') ||
-                              (overlayDP.style.display !== 'none') ||
-                              (overlayColor.style.display !== 'none');
-
-    // Determine if the click was outside all overlays
-    var isClickInsideOverlay = content1.contains(event.target) ||
-                               content2.contains(event.target) ||
-                               overlay2.contains(event.target) ||
-                               overlay3.contains(event.target)
-    if (!isClickInsideOverlay && isAnyOverlayVisible) {
-      closeOverlay();
-    }
-  });
-});
 
 function showDivLayout() {
   console.log("Explain: Info_card_filp")

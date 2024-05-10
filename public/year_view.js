@@ -1,35 +1,10 @@
-
 const years = [2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
 let select_year;
-let colorRanges = [
-    { threshold: 0, color: '#34B274' },
-    { threshold: 30, color: '#34B274' },
-    { threshold: 50, color: '#FDD000' },
-    { threshold: 80, color: '#FDD000' },
-    { threshold: 100, color: '#F4681A' },
-    { threshold: 130, color: '#F4681A' },
-    { threshold: 150, color: '#D3112E' },
-    { threshold: 180, color: '#D3112E' },
-    { threshold: 200, color: '#8854D0' },
-    { threshold: 260, color: '#8854D0' },
-    { threshold: 300, color: '#731425' },
-    { threshold: 500, color: '#731425' },
-    // ... Add other ranges here
-  ];
-  // Create individual scales for each gradient range
-const scales = colorRanges.slice(0, -1).map((range, i) => {
-    const nextRange = colorRanges[i + 1];
-    return {
-      scale: d3.scaleLinear()
-               .domain([range.threshold, nextRange.threshold])
-               .range([range.color, nextRange.color]),
-      maxThreshold: nextRange.threshold
-    };
-  });
+
   containerWidth = screen.width*0.6//container.node().getBoundingClientRect().width;
 containerHeight = screen.height*0.8//container.node().getBoundingClientRect().height;
 
-  const view_type = "type"
+
   const step = 10
   const show_pie = 0
   const gridSize = containerWidth/60,svg_year = d3.select(".year_view").append("svg").attr("width",1600).attr("height",gridSize*10*10.5)
@@ -73,17 +48,33 @@ data.forEach(function(d) {
 }, d => d.date);
     const group = svg_year.append("g").attr("transform",`translate(60,${50+gridSize*10*i})`).attr("class",year)
     group.append("text").text(year).attr("x",0).attr("y",-10).attr("text-anchor","end").attr("font-size",24).attr("fill","#838383")
+    let cards 
+    if(year_view_chart=='grid'){
+     cards = group.selectAll(".hour")
+      .data(groupedData)
+      .enter().append("rect")
+      .attr("x", d => weekFormat(parseDate(d[0])) * gridSize)
+      .attr("y", d => dayFormat(parseDate(d[0])) * gridSize)
+      .attr("rx", 4)
+      .attr("ry", 4)
+      .attr("class", "hour bordered")
+      .attr("width", gridSize)
+      .attr("height", gridSize)
+    }
+    else{
+     cards = group.selectAll(".hour")
+      .data(groupedData)
+      .enter().append("rect")
+      .attr("x", function(d,i){
+        return i*3
+      })
+      .attr("y", 10)
+      .attr("class", "hour bordered")
+      .attr("width", 3)
+      .attr("height", 100)
+    }
+    
 
-    const cards = group.selectAll(".hour")
-        .data(groupedData)
-        .enter().append("rect")
-        .attr("x", d => weekFormat(parseDate(d[0])) * gridSize)
-        .attr("y", d => dayFormat(parseDate(d[0])) * gridSize)
-        .attr("rx", 4)
-        .attr("ry", 4)
-        .attr("class", "hour bordered")
-        .attr("width", gridSize)
-        .attr("height", gridSize)
     group.on("click",function(){
         d3.select("#year-view-header").style("display","block")
         console.log(d3.select(this).attr("class"))
@@ -95,11 +86,8 @@ data.forEach(function(d) {
     if(view_type=="DP"){
       cards.style("fill", d => DP_fill(d[1].Type));
     }
-    else if(view_type=="gradient"){
-      cards.style("fill", d => color_fill(d[1].Value));
-    }
     else{
-      cards.style("fill", d => color_fill1(d[1].Value));
+      cards.style("fill", d => color_fill(d[1].Value,view_type));
     }
 
 
@@ -288,7 +276,7 @@ const data1 = Object.entries(countCategories(groupedData,view_type)).map(([key, 
            .attr("y", 0)
            .attr("width", (range[i]-range[i-1])*0.8)
            .attr("height", 20)
-           .style("fill", color_fill1(range[i]));
+           .style("fill", color_fill(range[i],view_type));
 
        }
        gLegend.append("text")
@@ -324,54 +312,6 @@ function DP_fill(d){
 
 
 
-function color_fill(d) {
-  if (d === 'Missing') {
-    return '#bbbbbb'; // Missing data color
-  } else if (d < colorRanges[0].threshold) {
-    return colorRanges[0].color; // Use the first color below the first threshold
-  } else {
-    // Find the correct scale based on the value of d
-    const scale = scales.find(s => d < s.maxThreshold);
-    if (scale) {
-      return scale.scale(d); // Return the color for the value within the range
-    } else {
-      return colorRanges[colorRanges.length - 1].color; // Use the last color above the last threshold
-    }
-  }
-}
-function color_type(d){
-  if(d<51){
-    return 'Good';}
-  else if (d<101){return 'Moderate';}
-  else if (d<151){return 'Unhealthy for sensitive group';}
-  else if (d<201){return 'Unhealthy';}
-  else if (d<301){return 'Very Unhealthy';}
-  else if (d<501){return 'Hazardous';}
-}
-function color_fill2(d){
-  if(d=='Good'){
-    return '#34B274';}
-  else if (d=='Moderate'){return '#FDD000';}
-  else if (d=='Unhealthy for sensitive group'){return '#F4681A';}
-  else if (d=='Unhealthy'){return '#D3112E';}
-  else if (d=='Very Unhealthy'){return '#8854D0';}
-  else if (d=='Hazardous'){return '#731425';}
-  else if (d=='Missing'){
-    return '#bbbbbb'
-  }
-}
-function color_fill1(d){
-  if(d<51){
-    return '#34B274';}
-  else if (d<101){return '#FDD000';}
-  else if (d<151){return '#F4681A';}
-  else if (d<201){return '#D3112E';}
-  else if (d<301){return '#8854D0';}
-  else if (d<501){return '#731425';}
-  else if (d=='Missing'){
-    return '#bbbbbb'
-  }
-}
 // Function to count categories
 function countCategories(data,countCategories) {
   if(countCategories=='DP'){

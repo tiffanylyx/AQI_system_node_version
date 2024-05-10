@@ -122,8 +122,14 @@ function processData(csvData1, csvData2, apiData, info) {
 
     // Assuming create_rosa is a function you've defined to do something with the data
     document.getElementById('header-text').textContent = "Air Quality Index of " + getFormattedDateTime()
-    create_rosa(getCurrentDate(), real_time_data, info);
-    svg.attr('transform', `translate(${width / 2}, ${height / 2}) scale(${scaleFactor})`)
+    if(chart_type=='circular'){
+      create_rosa(getCurrentDate(), real_time_data, info);
+    }
+    else{
+      create_bar(getCurrentDate(), real_time_data, info);
+    }
+    
+    //svg.attr('transform', `translate(${width / 2}, ${height / 2}) scale(${scaleFactor})`)
 
 }
 
@@ -191,7 +197,7 @@ const radiusScale = d3.scaleLinear()
 // Function to calculate rotation for each bar
 const calculateRotation = d => (angleScale(d.Type) * 180 / Math.PI-90)
 
-const barwidth = 20
+let barwidth = 20
 const scaleFactor = screen.width/(7.5*bar_height(300))
 let AQI_value = 0
 let DP
@@ -218,7 +224,246 @@ const health = status.append('span')
 
 const DP_text = status.append('span')
     .attr('class', 'pollutant-text-right')
+function create_bar(date,data_select,info){
+  let move_y = 140
+  barwidth = 60
+  var data = []
+  var typesArray = data_select.map(item => item.Type);
 
+  for(i in types){
+    if(typesArray.includes(types[i])){
+    data.push({'Type':types[i],
+    'Value': parseInt(data_select.find(item => item.Type === types[i]).Value,10)})
+  }
+  else{
+    data.push({'Type':types[i],
+    'Value': 'Missing'})
+  }
+}
+svg.selectAll("*").remove()
+var padding_bar = 100
+
+const circle_bar = svg.append('g').attr("id",'circle_bar')
+var layer1 = circle_bar.append('g').attr("id",'layer1');
+var layer2 = circle_bar.append('g').attr("id",'layer2');
+var layer3 = circle_bar.append('g').attr("id",'layer3')
+barGroups = layer3
+
+.selectAll('g')
+.data(data)
+.enter()
+.append('g')
+.attr("transform", function(d,i) {
+  return `translate(${(i-5/2)*(padding_bar+barwidth)-50},${move_y})`;
+})
+
+// Append a rect to each group
+bars = barGroups.append('rect')
+.attr('x', 0)
+  .attr('y', d => -bar_height_bar(d.Value, outerRadius, innerRadius ))
+  .attr('rx', barwidth / 10) // Rounded corners
+  .attr('ry', barwidth / 10) // Rounded corners
+  .attr('width', barwidth)
+  .attr('height', d => bar_height_bar(d.Value, outerRadius, innerRadius ))
+  .attr('fill', function(d){
+    if(AQI_value < parseInt(d.Value)){
+      AQI_value = parseInt(d.Value)
+      DP = d.Type
+    }
+    return color_fill(d.Value, view_type)
+  })
+  .attr("stroke", function(d){
+    if(d.Type==DP){
+      return 'Black'
+    }
+    else{ return 'None'}
+  })
+  .attr("stroke-width", function(d){
+    if(d.Type==DP){
+      return 4
+    }
+    else{ return 0}
+  })
+  for (let index = 0; index < data.length; index++) {
+    data_1 = data[index]
+    text_group = layer3.append("g").attr("transform",`translate(${(index-5/2)*(padding_bar+barwidth)-60+barwidth/2},${move_y+30})`)
+     
+    labels1 = text_group.append('text')
+    .attr("x", -10) // Position the text in the center of the rect
+    .attr("y",0) // Adjust the position accordingly
+    .style("text-anchor","middle")
+    .attr("dy", 0.3)
+    .attr("dominant-baseline", "central") // Vertically center the text
+    .text(function() {
+      for(i in info){
+        if ( data_1.Type==info[i].Name){
+          return info[i].Full+" ("+data_1.Type+")"
+        }
+      }
+    })
+    .attr("fill", 'black')
+    .style("font-size",14)
+    .attr("id",data_1.Type)
+    labels1.call(wrapText, 67);
+
+  bbox = labels1.node().getBBox()
+  textWidth = bbox.width;
+  textHeight = bbox.height;
+  console.log(textWidth,textHeight)
+  
+  // Now append a text element to each group
+  labels2 = text_group.append('text')
+  .attr("x", 40) // Position the text in the center of the rect
+  .attr("y",  textHeight/2) // Adjust the position accordingly
+    .attr("text-anchor", "middle") // Center the text
+    .attr("dominant-baseline", "central") // Vertically center the text
+    .text(function() {
+      return data_1.Value; // Assuming each datum has a label property
+    })
+    .style("font-size", "30px") // Smaller font size for the AQI range
+    .attr("dx", "0.3em").style('fill',function(){
+        if(data_1.Type==DP){
+          if((AQI_value<101)&&(AQI_value>50)){
+            return 'Black'
+          }
+          else{
+            return 'White'
+          }
+        }
+        else{
+          return color_fill(data_1.Value,view_type)
+        }
+      })
+  bbox = text_group.node().getBBox()
+  textWidth = bbox.width;
+  textHeight = bbox.height;
+  padding_h = 10
+  padding_v=10
+  rec = text_group.insert('rect', 'text') // Insert rectangle before the text element
+      .attr('x', bbox.x - padding_h / 2)
+      .attr('y', -8)
+      .attr('rx', textHeight / 4) // Rounded corners
+      .attr('ry', textHeight / 4) // Rounded corners
+      .attr('width', 120)
+      .attr('height', 70)
+      .style('fill',function(){
+              if(data_1.Type==DP){
+                return color_fill(data_1.Value,view_type)
+              }
+              else{
+                return 'white'
+              }
+            })
+      .attr("class",data_1.Type)
+      .attr("id",data_1.Value)
+      .style('stroke', function(){
+        if(data_1.Type!=DP){
+          return color_fill(data_1.Value,view_type)
+        }
+        else{
+          return 'Black'
+        }
+      } )
+      .style('stroke-width',function(){
+              if(data_1.Type==DP){
+                return '4'
+              }
+              else{
+                return '3'
+              }
+
+            } )
+  //.style('filter', 'url(#drop-shadow)');
+  rec.on('click',function(){
+    event.stopPropagation();
+    var type = d3.select(this).attr('class')
+    var value = d3.select(this).attr('id')
+    if(value=='Missing'){
+      console.log("Calendar: Open_Info_Card: Missing")
+      event.stopPropagation();
+      var overlay_Missing = document.getElementById('overlay_Missing');
+    // Show the overlay
+    overlay_Missing.style.display = 'block';
+    }
+    else{
+      for(i in info){
+        if(info[i].Name===type){
+          openOverlay(type,info[i])
+        }
+      }
+    }
+  })
+  }
+
+
+AQI_y =-bar_height_bar(AQI_value, outerRadius, innerRadius )+move_y
+  AQI_line_0 = layer1
+  .append("line")
+  .attr("x1",(3)*(padding_bar+barwidth))
+  .attr("x2",(-3)*(padding_bar+barwidth))
+       .attr("y1",AQI_y)
+       .attr("y2",AQI_y)
+        .attr("stroke", color_fill(AQI_value,view_type)) // arrow.attr can also be used as a getter
+        .attr("fill", color_fill(AQI_value,view_type))
+        .attr("stroke-width", 5)
+        .attr("opacity",1)
+AQI_text_0 = layer1.append("text")
+.attr("class","sub_title")
+.attr("x",0-barwidth/2)
+.attr("y",AQI_y-20 )
+.attr("text-anchor", "middle")
+.text("AQI = "+AQI_value)
+.attr('fill',color_fill(AQI_value,view_type))
+.attr("opacity",1)
+x_axis = layer1
+.append("line")
+.attr("x1",(3)*(padding_bar+barwidth))
+.attr("x2",(-3)*(padding_bar+barwidth))
+      .attr("y1",move_y)
+      .attr("y2",move_y)
+      .attr("stroke", "gray")
+      .attr("stroke-width", 1)
+      .attr("opacity",1)
+y_axis = layer1
+.append("line")
+.attr("x1",(-3)*(padding_bar+barwidth))
+.attr("x2",(-3)*(padding_bar+barwidth))
+      .attr("y1",move_y)
+      .attr("y2",move_y-bar_height_bar(500,outerRadius,innerRadius))
+      .attr("stroke", "gray")
+      .attr("stroke-width", 1)
+      .attr("opacity",1)
+for (i in rank){
+  layer2.append("text")
+  .text(rank[i])
+  .attr("x", (-3)*(padding_bar+barwidth)-10)
+  .attr("y",move_y-bar_height_bar(rank[i],outerRadius,innerRadius))
+  .attr("text-anchor","end")
+  .attr("fill","black")
+  if(i>0){
+    layer2.append("rect")
+    .attr("x",(-3)*(padding_bar+barwidth)-5)
+    .attr("y",move_y-bar_height_bar(rank[i],outerRadius,innerRadius))
+    .attr("width",10)
+    .attr("height",bar_height_bar(rank[i],outerRadius,innerRadius)-bar_height_bar(rank[i-1],outerRadius,innerRadius))
+    .attr("fill",color_fill(rank[i-1],view_type))
+  }
+
+}
+date_text.text(getFormattedDateTime());
+AQI_text.text('AQI: '+AQI_value).style('fill',color_fill(AQI_value,view_type));
+health.text(color_type(AQI_value));
+
+DP_text.text( 'Driver Pollutant: '+DP).style('fill',color_fill(AQI_value,view_type));
+floatingDiv.on('click',function(){
+  event.stopPropagation();
+  var overlay_DP = document.getElementById('overlay_DP');
+  // Show the overlay
+  overlay_DP.style.display = 'block';
+          })
+floatingDiv.style("border-top", "10px solid "+color_fill(AQI_value,view_type))
+
+}
 //create_rosa(data)
 function create_rosa(date,data_select,info){
   var data = []
@@ -256,7 +501,7 @@ const bars = layer3
       AQI_value = parseInt(d.Value)
       DP = d.Type
     }
-    return color_fill(d.Value)
+    return color_fill(d.Value, view_type)
   })
   .attr("stroke", function(d){
     if(d.Type==DP){
@@ -283,7 +528,7 @@ const AQI_mark =  layer2.append('circle')
 .attr('cy', 0)
 .attr('r',bar_height(AQI_value, outerRadius, innerRadius ))
 .attr("fill","none")
-.attr("stroke",color_fill(AQI_value))
+.attr("stroke",color_fill(AQI_value,view_type))
 .attr("stroke-width",6)
 
 const lines = layer1.append("g")
@@ -296,7 +541,7 @@ const lines = layer1.append("g")
   .attr('y2', -bar_height(AQI_value, outerRadius, innerRadius )-buttun_line_padding)
   .attr('x2', 0)
   .attr('transform', d => `rotate(${calculateRotation(d)})`)
-  .attr('stroke', d => color_fill(d.Value))
+  .attr('stroke', d => color_fill(d.Value,view_type))
   .attr("stroke-width",3)
   .style("stroke-dasharray", ("5, 5"))
   var yAxis = layer2
@@ -391,7 +636,7 @@ for (i in data){
         }
       }
       else{
-        return color_fill(data[i].Value)
+        return color_fill(data[i].Value,view_type)
       }
     })
 
@@ -452,7 +697,7 @@ for (i in data){
       .attr('height', textHeight + padding_v)
       .style('fill',function(){
               if(data[i].Type==DP){
-                return color_fill(data[i].Value)
+                return color_fill(data[i].Value,view_type)
               }
               else{
                 return 'white'
@@ -460,7 +705,7 @@ for (i in data){
             } )
       .style('stroke', function(){
         if(data[i].Type!=DP){
-          return color_fill(data[i].Value)
+          return color_fill(data[i].Value,view_type)
         }
         else{
           return 'Black'
@@ -528,7 +773,7 @@ for (i in data){
       DP_info = DP_group.append("text").attr("x",106).attr("y",5);
         DP_group.append("path")
         .attr("d", "M-20,-7 L10,-7 L20,0 L10,7 L-5,7 L-5,-7 Z") // Triangle path with the tip centered at (0,0)
-        .attr("fill", color_fill(AQI_value))
+        .attr("fill", color_fill(AQI_value,view_type))
       // Draw the exclamation mark using rectangles for simplicity
 
       DP_group.append("rect")
@@ -544,7 +789,7 @@ for (i in data){
         .attr("dy", "1")
         .text(" Driver Pollutant")
         .style("font-weight", "bold")
-        .style("fill", color_fill(AQI_value)); // Style the text color
+        .style("fill", color_fill(AQI_value,view_type)); // Style the text color
 
         // Append the "Learn more" text
         DP_info.append("tspan")
@@ -575,23 +820,31 @@ for (i in data){
 }
 
 date_text.text(getFormattedDateTime());
-AQI_text.text('AQI: '+AQI_value).style('fill',color_fill(AQI_value));
+AQI_text.text('AQI: '+AQI_value).style('fill',color_fill(AQI_value,view_type));
 health.text(color_type(AQI_value));
 
-DP_text.text( 'Driver Pollutant: '+DP).style('fill',color_fill(AQI_value));
+DP_text.text( 'Driver Pollutant: '+DP).style('fill',color_fill(AQI_value,view_type));
 floatingDiv.on('click',function(){
   event.stopPropagation();
   var overlay_DP = document.getElementById('overlay_DP');
   // Show the overlay
   overlay_DP.style.display = 'block';
           })
-floatingDiv.style("border-top", "10px solid "+color_fill(AQI_value))
+floatingDiv.style("border-top", "10px solid "+color_fill(AQI_value,view_type))
 
 }
 
 
 function bar_height_2(d, max, min){
   return 4.5*Math.pow(d,0.65)+barwidth*0.7
+}
+function bar_height_bar(d, max, min){
+  var res;
+  if(d<151){
+    res =  d;}
+  else if (d<301){res= 200+(d-200)/2;}
+  else if (d<501){res = 200+(300-200)/2+(d-300)/4;}
+  return res*1.3
 }
 function bar_height(d, max, min){
   var res;
@@ -605,30 +858,7 @@ function bar_height(d, max, min){
   return res*0.85+barwidth
 }
 
-function color_fill(d){
-  if(d<51){
-    return '#34B274';}
-  else if (d<101){return '#FDD000';}
-  else if (d<151){return '#F4681A';}
-  else if (d<201){return '#D3112E';}
-  else if (d<301){return '#8854D0';}
-  else if (d<501){return '#731425';}
-  else if (d=='Missing'){
-    return '#bbbbbb'
-  }
-}
 
-function color_type(d){
-  if(d<51){
-    return 'Good';}
-  else if (d<101){return 'Moderate';}
-  else if (d<151){return 'Unhealthy for sensitive group';}
-  else if (d<201){return 'Unhealthy';}
-  else if (d<301){return 'Very Unhealthy';}
-  else if (d<501){return 'Hazardous';}
-
-
-}
 
 function text_to_display(dateString){
   // Function to parse the date in m/d/y format
@@ -650,72 +880,7 @@ const suffix = ["th", "st", "nd", "rd"][((day % 100) - 20) % 10] || ["th", "st",
 const formattedDate = formatDate(date).replace(/(\d+),/, `$1${suffix},`);
 return formattedDate
 }
-function wrap(text, width) {
-  text.each(function() {
-    var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(), // Split the text into words
-        word,
-        line = [],
-        lineNumber = 0,
-        lineHeight = 1.1, // ems
-        x = 0, // x position
-        y = text.attr("y"), // y position
-        dy = 0, // Initial offset
-        tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
 
-    while (word = words.pop()) {
-      line.push(word);
-      tspan.text(line.join(" "));
-      if (tspan.node().getComputedTextLength() > width) {
-        line.pop(); // remove the word that was too much
-        tspan.text(line.join(" "));
-        line = [word]; // Start a new line with the overflow word
-        tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-      }
-    }
-  });
-}
-function create_color(containerWidth,containerHeight){
-
-svg_color.selectAll("*").remove()
-group = svg_color
-.attr('width',containerWidth)
-.attr('height',containerHeight)
-.append('g')
-.attr('transform', `translate(${containerWidth / 2}, ${containerHeight / 2-15})`);
-var yAxis = group
-    .attr("text-anchor", "middle");
-
-var yTick = yAxis
-  .selectAll("g")
-  .data(rank.reverse())
-  .enter().append("g");
-
-yTick.append("circle")
-    .attr("fill", d=>color_fill(d))
-    .style("stroke-dasharray", ("1, 5"))
-    .attr("stroke", "#555")
-    .attr("r", d=>bar_height(d,outerRadius,innerRadius)*0.9)
-    .attr('opacity',0.9)
-yTick.append("circle")
-    .attr("fill", 'white')
-    .style("stroke-dasharray", ("1, 5"))
-    .attr("stroke", "#555")
-    .attr("r", d=>bar_height(0,outerRadius,innerRadius)*0.9)
-    yTick.append("text")
-        .data(rank)
-        .attr("y", function(d) { return -bar_height(d,outerRadius,innerRadius)*0.9+15 })
-        .attr("dy", "0.35em")
-        .attr("fill", "white")
-        .text(function(d,i){
-          if(i<6){
-          return rank[i+1]+'--'+d}})
-        .attr("class","pullution-axis")
-        .style("font-size","20")
-
-
-svg_color.attr('transform', ` scale(${0.75})`)
-}
 function openOverlay(buttonText,info) {
   console.log("Open_Info_Card: "+buttonText)
   var overlay = document.getElementById('overlay');
@@ -734,60 +899,7 @@ function openOverlay(buttonText,info) {
 
   // Show the overlay
   overlay.style.display = 'block';
-
 }
-document.addEventListener('DOMContentLoaded', function() {
-  // Function to close the overlay
-  function closeOverlay() {
-    console.log('clos')
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('overlay_DP').style.display = 'none';
-    document.getElementById('overlay_color').style.display = 'none';
-    document.getElementById('overlay_Missing').style.display = 'none';   
-    var content1 = document.getElementById('overlay-content1');
-    var content2 = document.getElementById('overlay-content2');
-    content1.style.display = 'block';
-    content2.style.display = 'none';
-    var note_card = document.getElementById('note_card');
-    note_card.textContent = "1/2"
-  }
-
-  // Set up the close icon event listener
-  document.getElementById('close-icon').addEventListener('click', closeOverlay);
-  document.getElementById('close-icon-DP').addEventListener('click', closeOverlay);
-  document.getElementById('close-icon-color').addEventListener('click', closeOverlay);
-  document.getElementById('close-icon-Missing').addEventListener('click', closeOverlay); 
-  // Close the overlay when clicking outside
-  document.addEventListener('click', function(event) {
-    var overlay = document.getElementById('overlay');
-    var overlayDP = document.getElementById('overlay_DP');
-    var overlayColor = document.getElementById('overlay_color');
-    var overlayMissing = document.getElementById('overlay_Missing');
-    var content1 = document.getElementById('overlay-content1');
-    var content2 = document.getElementById('overlay-content2');
-    var overlay2 = document.getElementById('overlay2');
-    var overlay3 = document.getElementById('overlay3');
-    var overlay4 = document.getElementById('overlay4');    
-
-    // Check if any overlay is currently displayed
-    var isAnyOverlayVisible = (overlay.style.display !== 'none') ||
-                              (overlayDP.style.display !== 'none') ||
-                              (overlayColor.style.display !== 'none')||
-                              (overlayMissing.style.display !== 'none');
-
-    // Determine if the click was outside all overlays
-    var isClickInsideOverlay = content1.contains(event.target) ||
-                               content2.contains(event.target) ||
-                               overlay2.contains(event.target) ||
-                               overlay3.contains(event.target) ||
-                               overlay4.contains(event.target) 
-
-    if (!isClickInsideOverlay && isAnyOverlayVisible) {
-      closeOverlay();
-    }
-  });
-});
-
 function showDivLayout() {
   console.log("Info_card_filp")
   var content1 = document.getElementById('overlay-content1');
@@ -795,15 +907,15 @@ function showDivLayout() {
   var note_card = document.getElementById('note_card');
   // Toggle between showing content1 and content2
   if (content1.style.display === 'none') {
-    content1.style.display = 'block';
-    content2.style.display = 'none';
-    note_card.textContent = "1/2"
+      content1.style.display = 'block';
+      content2.style.display = 'none';
+      note_card.textContent = "1/2"
   } else {
-    content1.style.display = 'none';
-    content2.style.display = 'block';
-    note_card.textContent = "2/2"
+      content1.style.display = 'none';
+      content2.style.display = 'block';
+      note_card.textContent = "2/2"
   }
-}
+  }
 
 document.getElementById('overlay-content1').onclick = showDivLayout;
 document.getElementById('overlay-content2').onclick = showDivLayout; // If you want to switch back to the first div when the second one is clicked
