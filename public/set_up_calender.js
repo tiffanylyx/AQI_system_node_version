@@ -1,19 +1,4 @@
-// Original console.log function
-const originalConsoleLog = console.log;
 
-// Redefine console.log
-console.log = function(message, ...optionalParams) {
-    originalConsoleLog(message, ...optionalParams);  // Keep normal log in the console
-
-    // Send log message to the server
-    fetch('/log', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({message, optionalParams})
-    });
-};
 // set the dimensions and margins of the graph
 select_date = 193
 let container = d3.select('#daily_chart');
@@ -697,7 +682,7 @@ for (i in data){
               else{indicate = -1}
             return `translate(${-textWidth/2.5},${indicate*(textHeight+15)})`})
             .on('click',function(){
-              console.log("Calendar_page: Open_Info_Card: DP")
+              console.log("Calendar: Open_Info_Card: DP")
               event.stopPropagation();
               var overlay_DP = document.getElementById('overlay_DP');
             // Show the overlay
@@ -762,7 +747,7 @@ return formattedDate
 }
 
 function openOverlay(buttonText,info) {
-  console.log("Calendar-Page: Open_Info_Card: "+buttonText)
+  console.log("Calendar: Open_Info_Card: "+buttonText)
   var overlay = document.getElementById('overlay');
 
   var overlayContent = document.getElementById('overlay-content1');
@@ -787,7 +772,7 @@ function openOverlay(buttonText,info) {
 
 
 function showDivLayout() {
-  console.log("Calendar-page: Info_card_filp")
+  console.log("Calendar: Info_card_filp")
   var content1 = document.getElementById('overlay-content1');
   var content2 = document.getElementById('overlay-content2');
   var note_card = document.getElementById('note_card');

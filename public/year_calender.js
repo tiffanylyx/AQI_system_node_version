@@ -35,7 +35,8 @@ Promise.all([
   
 
 });
-function create_year(data, info){
+function create_year(data, info,select_year){
+  console.log("Calendar: select Year: ",select_year)
   d3.select("#calendar").style("display","block")
   d3.select("#year-title").text(select_year)
   d3.select("#year-view-header").style("display","block")
@@ -116,7 +117,7 @@ function create_year(data, info){
       .attr("height",gridHeight)
       .on('click', function() {
           create_select_month(svg_calender,month,data,info)
-          console.log('Month ' + (month + 1) + ' clicked');
+          console.log('Calendar: Month ' + (month + 1) + ' clicked');
           // Logic to display the detailed view for the month
       });
 
@@ -361,7 +362,7 @@ else{
 }
 
 d3.select('#prev-month-btn').on('click', function() {
-  console.log("back-month")
+  console.log("Calendar: back-month")
     // Decrement the month and update year if needed
     select_month--;
     if (select_month < 0) {
@@ -378,7 +379,7 @@ d3.select('#prev-month-btn').on('click', function() {
 
 // Click event handler for the next month button
 d3.select('#next-month-btn').on('click', function() {
-    console.log("next-month")
+    console.log("Calendar: next-month")
     // Increment the month and update year if needed
     select_month++;
     if (select_month > 11) {
@@ -393,9 +394,9 @@ d3.select('#next-month-btn').on('click', function() {
     create_select_month(svg_calender,select_month,data,info)
 });
 d3.select('#back-to-year-btn').on('click', function() {
-  console.log("back-to-year")
+  console.log("Calendar: back-to-year")
 
-  create_year(data, info)
+  create_year(data, info,select_year)
 })
 }
 function create_bar_small(date,data_select,group,info,size,width,height,click){
@@ -552,7 +553,7 @@ layer3.attr('transform', `scale(${size})`)
 if(click=='True'){
 
 group.on("click", function(){
-  console.log("Daily Calendar: "+date)
+  console.log("Calendar: Open Daily Calendar: "+date)
   create_rosa(date,data,info)
     svg_calender.selectAll('#edge').style('fill',"#ffffff")
   group.select('#edge').style('fill',"#DCEBFE")

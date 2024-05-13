@@ -1,19 +1,4 @@
-// Original console.log function
-const originalConsoleLog = console.log;
 
-// Redefine console.log
-console.log = function(message, ...optionalParams) {
-    originalConsoleLog(message, ...optionalParams);  // Keep normal log in the console
-
-    // Send log message to the server
-    fetch('/log', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({message, optionalParams})
-    });
-};
 const select_date = 228
 const scaleFactor = 0.95
 const container = d3.select('#bar_chart');

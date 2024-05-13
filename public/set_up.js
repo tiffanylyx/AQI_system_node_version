@@ -1,19 +1,3 @@
-// Original console.log function
-const originalConsoleLog = console.log;
-
-// Redefine console.log
-console.log = function(message, ...optionalParams) {
-    originalConsoleLog(message, ...optionalParams);  // Keep normal log in the console
-
-    // Send log message to the server
-    fetch('/log', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({message, optionalParams})
-    });
-};
 const csvFile1 = '2014-2023.csv';
 const csvFile2 = 'info.csv';
 const types = ['NO2','O3','CO','PM10','PM2.5','SO2']
@@ -309,7 +293,6 @@ bars = barGroups.append('rect')
   bbox = labels1.node().getBBox()
   textWidth = bbox.width;
   textHeight = bbox.height;
-  console.log(textWidth,textHeight)
   
   // Now append a text element to each group
   labels2 = text_group.append('text')
@@ -379,7 +362,7 @@ bars = barGroups.append('rect')
     var type = d3.select(this).attr('class')
     var value = d3.select(this).attr('id')
     if(value=='Missing'){
-      console.log("Calendar: Open_Info_Card: Missing")
+      console.log("Home_page: Open_Info_Card: Missing")
       event.stopPropagation();
       var overlay_Missing = document.getElementById('overlay_Missing');
     // Show the overlay
@@ -733,7 +716,7 @@ for (i in data){
     a.pop()
     newtext = a.join(' ')
     if(value=='Missing'){
-      console.log("Calendar: Open_Info_Card: Missing")
+      console.log("Home_page: Open_Info_Card: Missing")
       event.stopPropagation();
       var overlay_Missing = document.getElementById('overlay_Missing');
     // Show the overlay
@@ -763,12 +746,7 @@ for (i in data){
 
       if(data[i].Type==DP){
         DP_group = text_group.append("g")
-        .attr("text-anchor", "middle").attr("transform", function(){
-          var indicate = 1
-          if (Math.cos(Math.PI+angleScale(data[i].Type))>0){
-            indicate = 1}
-          else{indicate = -1}
-        return `translate(${-indicate*70},${indicate*50})`})
+        .attr("text-anchor", "middle")
 
       DP_info = DP_group.append("text").attr("x",106).attr("y",5);
         DP_group.append("path")
@@ -802,13 +780,12 @@ for (i in data){
         const bbox = DP_info.node().getBBox();
         const textWidth = bbox.width;
         const textHeight = bbox.height;
-        console.log(textHeight,textWidth)
         DP_group.attr("text-anchor", "middle").attr("transform", function(){
               var indicate = 1
               if (Math.cos(Math.PI+angleScale(data[i].Type))>0){
-                indicate = 1}
-              else{indicate = -1}
-            return `translate(20,${indicate*(textHeight+25)})`})
+                indicate = -1}
+              else{indicate = 0}
+            return `translate(${indicate*textWidth+20},${indicate*(textHeight+25)})`})
             .on('click',function(){
               console.log("Home_page: Open_Info_Card: DP")
               event.stopPropagation();
@@ -882,7 +859,7 @@ return formattedDate
 }
 
 function openOverlay(buttonText,info) {
-  console.log("Open_Info_Card: "+buttonText)
+  console.log("Home_page:Open_Info_Card: "+buttonText)
   var overlay = document.getElementById('overlay');
 
   var overlayContent = document.getElementById('overlay-content1');
@@ -901,7 +878,7 @@ function openOverlay(buttonText,info) {
   overlay.style.display = 'block';
 }
 function showDivLayout() {
-  console.log("Info_card_filp")
+  console.log("Home_page:Info_card_filp")
   var content1 = document.getElementById('overlay-content1');
   var content2 = document.getElementById('overlay-content2');
   var note_card = document.getElementById('note_card');
@@ -922,5 +899,5 @@ document.getElementById('overlay-content2').onclick = showDivLayout; // If you w
 document.getElementById('floating-legend').addEventListener('click', function(){
   event.stopPropagation();
   document.getElementById('overlay_color').style.display = 'block';
-  console.log("Open_Info_Card: Color")
+  console.log("Home_page:Open_Info_Card: Color")
 });

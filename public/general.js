@@ -1,6 +1,22 @@
+// Original console.log function
+const originalConsoleLog = console.log;
+
+// Redefine console.log
+console.log = function(message, ...optionalParams) {
+    originalConsoleLog(message, ...optionalParams);  // Keep normal log in the console
+
+    // Send log message to the server
+    fetch('/log', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({message, optionalParams})
+    });
+};
 let view_type = "gradient"
 let year_view_chart = "grid"
-let chart_type = "bar"
+let chart_type = "circular"
 function wrap(text, width) {
     text.each(function() {
       var text = d3.select(this),
@@ -108,7 +124,7 @@ else if (d=='Missing'){
 document.addEventListener('DOMContentLoaded', function() {
     // Function to close the overlay
     function closeOverlay() {
-      console.log('clos')
+      console.log('close')
       document.getElementById('overlay').style.display = 'none';
       document.getElementById('overlay_DP').style.display = 'none';
       document.getElementById('overlay_color').style.display = 'none';
