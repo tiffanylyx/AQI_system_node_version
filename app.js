@@ -39,20 +39,20 @@ console.log = function(message, ...optionalParams) {
 // Define routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
-    console.log('Home Page Accessed');
+    console.log('Home_page: Home Page Accessed');
 });
 
 app.get('/visualizing', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'visualizing.html'));
-    console.log('Open Visualizing');
+    console.log('Explain: Open Visualizing');
 });
 app.get('/calendar', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'calendar_year.html'));
-    console.log('Open Calendar');
+    console.log('Calendar: Open Calendar');
 });
 app.get('/video', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'video.html'));
-    console.log('Open Video');
+    console.log('Video: Open Video');
 });
 // Start the server
 const PORT = process.env.PORT || 3000;
