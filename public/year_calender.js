@@ -401,7 +401,7 @@ d3.select('#back-to-year-btn').on('click', function() {
 }
 function create_bar_small(date,data_select,group,info,size,width,height,click){
   AQI_value = 0
-  let move_y = 60
+  let move_y = 100
   barwidth = 40
   var data = []
   var typesArray = data_select.map(item => item.Type);

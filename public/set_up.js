@@ -376,6 +376,57 @@ bars = barGroups.append('rect')
       }
     }
   })
+  if(data_1.Type==DP){
+    DP_group = text_group.append("g")
+    .attr("text-anchor", "middle")
+    // Define the points for the triangle
+    var points = [
+      {x: -18, y: 0}, // Adjusted for center positioning (-10, 0)
+      {x: 18, y: 0}, // Adjusted for center positioning (10, 0)
+      {x: 0, y: 18*1.73} // Adjusted for center positioning (0, -17)
+    ];
+  
+    // Draw the triangle using a path element
+    DP_group.append("path")
+      .attr("d", d3.line()
+        .x(function(d) { return d.x+10; })
+        .y(function(d) { return d.y-bar_height_bar(AQI_value, outerRadius, innerRadius )-70; })
+        .curve(d3.curveLinearClosed) // This makes the path closed
+      (points))
+      .style("fill", color_fill(AQI_value,view_type)); // Style the text color
+    DP_info = DP_group.append("text").attr("x",10).attr("y",-bar_height_bar(AQI_value, outerRadius, innerRadius )-80);
+  
+  
+    // Append the text "Driver Pollutant"
+    DP_info.append("tspan")
+    .attr("dx", "6")
+    .attr("dy", "1")
+    .text(" Driver Pollutant")
+    .style("font-size", "26px")
+    .style("font-weight", "bold")
+    .style("text-decoration", "underline")
+    .style("fill", color_fill(AQI_value,view_type)); // Style the text color
+    // Append the "Learn more" text
+    DP_info.append("tspan")
+    .attr("dx", "6")
+    .text("Learn more")
+    .style("font-size", "10px")
+    .style("text-decoration", "underline")
+    .style("fill", "blue") // Style the text to look like a link  
+    
+  
+    const bbox = DP_info.node().getBBox();
+    const textWidth = bbox.width;
+    const textHeight = bbox.height;
+    DP_group
+        .on('click',function(){
+          console.log("Home_page: Open_Info_Card: DP")
+          event.stopPropagation();
+          var overlay_DP = document.getElementById('overlay_DP');
+        // Show the overlay
+        overlay_DP.style.display = 'block';}
+        )
+  }
   }
 
 
@@ -785,7 +836,7 @@ for (i in data){
               if (Math.cos(Math.PI+angleScale(data[i].Type))>0){
                 indicate = -1}
               else{indicate = 0}
-            return `translate(${indicate*textWidth+20},${indicate*(textHeight+25)})`})
+            return `translate(${indicate*textWidth+20},${-1*(textHeight+25)})`})
             .on('click',function(){
               console.log("Home_page: Open_Info_Card: DP")
               event.stopPropagation();

@@ -151,6 +151,7 @@ const DP_text = status.append('span')
     .attr('class', 'pollutant-text-right')
 function create_bar(date,data_select,info){
   d3.select("#year-view-header").style("display","none")
+  AQI_value = 0
   let move_y = 140
   barwidth = 60
   var data = []
@@ -235,6 +236,7 @@ bars = barGroups.append('rect')
   bbox = labels1.node().getBBox()
   textWidth = bbox.width;
   textHeight = bbox.height;
+
   
   // Now append a text element to each group
   labels2 = text_group.append('text')
@@ -248,7 +250,7 @@ bars = barGroups.append('rect')
     .style("font-size", "30px") // Smaller font size for the AQI range
     .attr("dx", "0.3em").style('fill',function(){
         if(data_1.Type==DP){
-          if((AQI_value<101)&&(AQI_value>50)){
+          if((AQI_value<101)&&(AQI_value>30)){
             return 'Black'
           }
           else{
@@ -318,6 +320,52 @@ bars = barGroups.append('rect')
       }
     }
   })
+  // Move text to the front if needed (for browsers that don't support 'insert')
+ 
+
+  if(data_1.Type==DP){
+  DP_group = text_group.append("g")
+  .attr("text-anchor", "middle")
+  // Define the points for the triangle
+  var points = [
+    {x: -18, y: 0}, // Adjusted for center positioning (-10, 0)
+    {x: 18, y: 0}, // Adjusted for center positioning (10, 0)
+    {x: 0, y: 18*1.73} // Adjusted for center positioning (0, -17)
+  ];
+
+  // Draw the triangle using a path element
+  DP_group.append("path")
+    .attr("d", d3.line()
+      .x(function(d) { return d.x+10; })
+      .y(function(d) { return d.y-bar_height_bar(AQI_value, outerRadius, innerRadius )-70; })
+      .curve(d3.curveLinearClosed) // This makes the path closed
+    (points))
+    .style("fill", color_fill(AQI_value,view_type)); // Style the text color
+  DP_info = DP_group.append("text").attr("x",10).attr("y",-bar_height_bar(AQI_value, outerRadius, innerRadius )-80);
+
+
+  // Append the text "Driver Pollutant"
+  DP_info
+  .text(" Driver Pollutant")
+  .style("font-size", "26px")
+  .style("font-weight", "bold")
+  .style("text-decoration", "underline")
+  .style("fill", color_fill(AQI_value,view_type)); // Style the text color
+
+  
+
+  const bbox = DP_info.node().getBBox();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+  DP_group
+      .on('click',function(){
+        console.log("Calendar: Open_Info_Card: DP")
+        event.stopPropagation();
+        var overlay_DP = document.getElementById('overlay_DP');
+      // Show the overlay
+      overlay_DP.style.display = 'block';}
+      )
+}
   }
 
 
