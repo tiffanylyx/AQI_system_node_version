@@ -241,8 +241,11 @@ color:black;
    position: absolute; 
     top:18vh;
     order: -1;
-    margin-right: auto;
     font-size:20px;
+    padding:6px 20px;
+    background-color: #FAFAFA;
+    border-radius: 10px;
+
 }
 .prev-btn, .next-btn {
   border: none;

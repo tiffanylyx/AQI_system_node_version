@@ -138,7 +138,7 @@ yAxis.selectAll("text")
       d3.select("#year-view-header").style("display","none")
       d3.select("#calendar").style("display","none")
       d3.select("#year_view").style("display","block")
-      d3.select("#color_bar").style("display","block")
+      d3.select("#color_bar").style("display","none")
 
     })
 

@@ -3,7 +3,7 @@ const csvFile2 = 'info.csv';
 const types = ['NO2','O3','CO','PM10','PM2.5','SO2']
 function getFormattedDateTime() {
     const now = new Date();
-    now.setHours(now.getHours()-2); // Subtract one hour
+    now.setHours(now.getHours()-1); // Subtract one hour
 
 
     const months = ["January", "February", "March", "April", "May", "June",
@@ -35,7 +35,7 @@ function getCurrentDate() {
 function getCurrentDateAndUTCHour() {
     // Create a new Date object for the current date and time
     var now = new Date();
-    now.setHours(now.getHours()-2); // Subtract one hour
+    now.setHours(now.getHours()-1); // Subtract one hour
 
 
     // Fetch the year, month, and day
@@ -108,12 +108,13 @@ function processData(csvData1, csvData2, apiData, info) {
     document.getElementById('header-text').textContent = "Air Quality Index of " + getFormattedDateTime()
     if(chart_type=='circular'){
       create_rosa(getCurrentDate(), real_time_data, info);
+      svg.attr('transform', `translate(${width / 2}, ${height / 2}) scale(${scaleFactor})`)
     }
     else{
       create_bar(getCurrentDate(), real_time_data, info);
     }
     
-    //svg.attr('transform', `translate(${width / 2}, ${height / 2}) scale(${scaleFactor})`)
+    
 
 }
 

@@ -14,7 +14,7 @@ console.log = function(message, ...optionalParams) {
         body: JSON.stringify({message, optionalParams})
     });
 };
-let view_type = "types"
+let view_type = "gradient"
 let year_view_chart = "grid"
 let chart_type = "circular"
 function wrap(text, width) {

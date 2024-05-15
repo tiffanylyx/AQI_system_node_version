@@ -48,8 +48,14 @@ var barwidth=30
 
 let AQI_value = 0
 let DP
-//const scaleFactor = screen.width/(11*bar_height(300))
-const scaleFactor = screen.width/(14*bar_height(300))
+let scaleFactor
+if(chart_type=='bar'){
+  scaleFactor = screen.width/(14*bar_height(300))
+}
+else{
+  scaleFactor = screen.width/(11*bar_height(300))
+}
+
 const circle_bar = svg.append('g')
 var layer1 = circle_bar.append('g');
 var layer2 = circle_bar.append('g');
@@ -745,6 +751,7 @@ health.text(color_type(AQI_value));
 
 DP_text.text( 'Driver Pollutant: '+DP).style('fill',color_fill(AQI_value,view_type));
 floatingDiv.style("border-top", "10px solid "+color_fill(AQI_value,view_type))
+svg.attr('transform', `translate(${width / 2}, ${height / 2}) scale(${scaleFactor})`)
 }
 
 

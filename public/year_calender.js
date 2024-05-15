@@ -355,10 +355,10 @@ containerHeight = container.node().getBoundingClientRect().height;
 }
 data_for_day = monthData.filter(d => d.Date.getDate() === dayOfMonth)
 if(chart_type=='circular'){
-  create_rosa((1+select_month).toString()+"/"+dayOfMonth+"/2023",data_for_day,info)
+  create_rosa((1+select_month).toString()+"/"+dayOfMonth+"/"+select_year,data_for_day,info)
 }
 else{
-  create_bar((1+select_month).toString()+"/"+dayOfMonth+"/2023",data_for_day,info)
+  create_bar((1+select_month).toString()+"/"+dayOfMonth+"/"+select_year,data_for_day,info)
 }
 
 d3.select('#prev-month-btn').on('click', function() {
