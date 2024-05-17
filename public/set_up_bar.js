@@ -240,13 +240,13 @@ function raw_number(data,info){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '52%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
   explainText.maxWidth = text_length+padding_text+ 'px';
 
@@ -322,13 +322,13 @@ function create_number(date, data, info){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '52%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
   explainText.maxWidth = text_length+ 'px';
 
@@ -376,13 +376,13 @@ function change_AQI(){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '52%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
   
 
@@ -458,13 +458,13 @@ function color_code(date, data, info){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '52%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
   // Append a rect to each group
   bars
@@ -514,13 +514,13 @@ function create_bar(date, data, info){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text+ 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '52%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
   bars
   .transition()
@@ -567,13 +567,13 @@ const textHeight = bbox.height;
 // Set the dimensions and position of the bounding box
 textBox.style.width = text_length+padding_text + 'px';
 textBox.style.height = (textHeight + paddingV * 2) + 'px';
-textBox.style.left = '52%';
-textBox.style.top = '50%';
+textBox.style.left = '51%';
+textBox.style.top = '20%';
 textBox.style.transform = 'translate(-50%, -50%)';
 
 // Position the text within the bounding box
 explainText.style.left = '50%';
-explainText.style.top = '50%';
+explainText.style.top = '20%';
 explainText.style.transform = 'translate(-50%, -50%)';
 // Append a rect to each group
 
@@ -712,13 +712,13 @@ function stack(distance,info){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '50%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
   d3.select('#bar_chart').select('svg').select('#circle_bar').remove()
   barwidth = 30
@@ -801,13 +801,13 @@ function add_rosa(date,data,info){
   // Set the dimensions and position of the bounding box
   textBox.style.width = text_length+padding_text + 'px';
   textBox.style.height = (textHeight + paddingV * 2) + 'px';
-  textBox.style.left = '52%';
-  textBox.style.top = '50%';
+  textBox.style.left = '51%';
+  textBox.style.top = '20%';
   textBox.style.transform = 'translate(-50%, -50%)';
 
   // Position the text within the bounding box
   explainText.style.left = '50%';
-  explainText.style.top = '50%';
+  explainText.style.top = '20%';
   explainText.style.transform = 'translate(-50%, -50%)';
 
   function blinkBar(index,blinkCount) {
