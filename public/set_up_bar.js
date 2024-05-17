@@ -53,7 +53,7 @@ const calculateRotation = d => (angleScale(d.Type) * 180 / Math.PI-90)
 
 var barwidth = 160
 var padding_bar = 120
-var padding_text = 460
+var padding_text = 300
 var text_length = barwidth*6 + padding_bar*5 - padding_text
 
 let AQI_value = 0
@@ -211,6 +211,7 @@ Promise.all([
   });
 
 })
+let explainText
 function raw_number(data,info){
   console.log("Explain: raw_number")
   len = 8000
@@ -221,25 +222,34 @@ function raw_number(data,info){
   bars_group.selectAll("*").remove()
   d3.select("#circle_bar").remove()
 
-  explain_text = explain_group
-  .append('text')
-  explain_text
-  .attr('x',0)
-  .attr("dy", 0.5)
-  .attr('y',-height*0.35).style("text-anchor","middle")
-  .style("font-size",'24px')
+  explainText = document.getElementById('explain-text');
+  console.log(explainText)
+  const textBox = document.getElementById('text-box');
   
-  bbox = explain_text.node().getBBox();
-  textWidth = bbox.width;
-  textHeight = bbox.height;
-  text_box = explain_group.insert('rect', 'text') // Insert rectangle before the text element
-      .attr('x', -text_length/2-padding_text/2+20)
-      .attr('y', bbox.y - padding_v / 2)
-      .attr('rx', textHeight / 2) // Rounded corners
-      .attr('ry', textHeight / 2) // Rounded corners
-      .attr('width', text_length+padding_text)
-      .attr('height', textHeight + padding_v)
-      .attr("fill",'#E2EEFF')
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
+
+  // Set the text content
+  explainText.textContent = 'This is the explanatory text';
+
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '52%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
+  explainText.maxWidth = text_length+padding_text+ 'px';
+
   barGroups = bars_group
     .selectAll('g')
     .data(data)
@@ -294,27 +304,34 @@ function raw_number(data,info){
 function create_number(date, data, info){
   console.log("Explain: create_number")
   raw_number(data,info)
+  explainText = document.getElementById('explain-text');
 
-  explain_text.append('tspan')
-.text('On August 24, 2023, which marked the highest value of Atlanta\'s Air Quality Index for the whole ')
+  const textBox = document.getElementById('text-box');
+  
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
 
-explain_text.append('tspan')
-  .text('2023')
-  .style("font-family", "Arial")
-        .style('font-weight', 'bold')
-        .style('fill', 'black');  // just for emphasis
-// Add the rest of the text
-explain_text.append('tspan')
-.text(', the levels of different pollutants in the air detected by the sensors of EPA were recorded as follows.');
-explain_text.call(wrapText, text_length);
+  // Set the text content
+  explainText.innerHTML = 'On <b>August 24, 2023</b>, which marked the highest value of Atlanta\'s Air Quality Index for the whole 2023, the levels of different pollutants in the air detected by the sensors of EPA were recorded as follows.';
 
-bbox = explain_text.node().getBBox();
-textWidth = bbox.width;
-textHeight = bbox.height;
-text_box
-    .attr('y', bbox.y - padding_v / 2)
-    .attr('width', text_length+padding_text)
-    .attr('height', textHeight + padding_v)
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '52%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
+  explainText.maxWidth = text_length+ 'px';
+
 
   // Append a rect to each group
   bars.attr('height', 80).attr('y',-40)
@@ -340,6 +357,36 @@ text_box
 }
 function change_AQI(){
   console.log("Explain: change_AQI")
+  
+  explainText = document.getElementById('explain-text');
+
+  const textBox = document.getElementById('text-box');
+  
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
+
+  // Set the text content
+  explainText.innerHTML = ' For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 - 500 based on a math equation.';
+  explainText.maxWidth = text_length+ 'px';
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '52%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
+  
+
+  /*
   explain_text.text('For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 -- 500 based on a math equation.')
   .call(wrapText, text_length);
   bbox = explain_text.node().getBBox();
@@ -349,6 +396,7 @@ function change_AQI(){
       .attr('y', bbox.y - padding_v / 2)
       .attr('width', text_length+padding_text)
       .attr('height', textHeight + padding_v)
+  */
   if(next==1){
   // Now append a text element to each group
   line = barGroups.append('line')
@@ -391,14 +439,33 @@ else{
 function color_code(date, data, info){
   console.log("Explain: color_code")
   next = 0
-  explain_text.text('And then color-code the number according to the new value to represent how harmful the pollution situation is to our life.')
-.call(wrapText, text_length);
-bbox = explain_text.node().getBBox();
-textWidth = bbox.width;
-textHeight = bbox.height;
-text_box
-    .attr('y', bbox.y - padding_v / 2)
-    .attr('height', textHeight + padding_v)
+  
+  explainText = document.getElementById('explain-text');
+
+  const textBox = document.getElementById('text-box');
+  
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
+
+  // Set the text content
+  explainText.innerHTML = ' For public communication purpose, instead of reporting the concentration, scientists first convert these raw numbers into a value range from 0 - 500 based on a math equation.';
+  explainText.maxWidth = text_length+ 'px';
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '52%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
   // Append a rect to each group
   bars
   .attr('fill','None')
@@ -428,15 +495,33 @@ text_box
 function create_bar(date, data, info){
   console.log("Explain: create_bar")
   back = 0
-  explain_text.text('What if for each pollutant we create a bar, and use the AQI value as each bar’s height? ')
-  .call(wrapText, text_length);
-  bbox = explain_text.node().getBBox();
-  textWidth = bbox.width;
-  textHeight = bbox.height;
-  text_box
-      .attr('y', bbox.y - padding_v / 2)
-      .attr('height', textHeight + padding_v)
   
+  explainText = document.getElementById('explain-text');
+
+  const textBox = document.getElementById('text-box');
+  
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
+
+  // Set the text content
+  explainText.innerHTML = 'What if for each pollutant we create a bar, and use the <b>AQI value as each bar’s height</b>?';
+  explainText.maxWidth = text_length+ 'px';
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text+ 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '52%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
   bars
   .transition()
   .duration(1000)
@@ -464,14 +549,34 @@ info_group.selectAll("*").remove()
 }
 function move_bar(date, data, info,distance){
 console.log("Explain: move_bar")
-explain_text.text('And of AQI of Day will take the WORST case, which is the highest AQI score among all the pollutants. The pollutant that has the highest AQI is the Driver Pollutant of the day.')
-.call(wrapText, text_length);
-bbox = explain_text.node().getBBox();
-textWidth = bbox.width;
-textHeight = bbox.height;
-text_box
-    .attr('y', bbox.y - padding_v / 2)
-    .attr('height', textHeight + padding_v)
+explainText = document.getElementById('explain-text');
+
+const textBox = document.getElementById('text-box');
+
+const paddingH = 20; // Horizontal padding
+const paddingV = 10; // Vertical padding
+
+// Set the text content
+explainText.innerHTML = 'And of AQI of Day will take the <b>worst case</b>, which is the <b>highest AQI value</b> among all the pollutants. The pollutant that has the highest AQI is the <b>Driver Pollutant</b> of the day.';
+explainText.maxWidth = text_length+ 'px';
+// Get the dimensions of the text
+const bbox = explainText.getBoundingClientRect();
+const textWidth = bbox.width;
+const textHeight = bbox.height;
+
+// Set the dimensions and position of the bounding box
+textBox.style.width = text_length+padding_text + 'px';
+textBox.style.height = (textHeight + paddingV * 2) + 'px';
+textBox.style.left = '52%';
+textBox.style.top = '50%';
+textBox.style.transform = 'translate(-50%, -50%)';
+
+// Position the text within the bounding box
+explainText.style.left = '50%';
+explainText.style.top = '50%';
+explainText.style.transform = 'translate(-50%, -50%)';
+// Append a rect to each group
+
 info_group.selectAll("*").remove()
   barwidth = 160
   padding_bar = 120
@@ -588,17 +693,33 @@ function stack(distance,info){
   console.log("Explain: stack")
   back = 1
   
-  explain_text.text(function(){
-    return 'The AQI of the day is '+AQI_value+', which is '+color_type(AQI_value)+' for people!'
-  })
-  .call(wrapText, text_length);
-  bbox = explain_text.node().getBBox();
-  textWidth = bbox.width;
-  textHeight = bbox.height;
-  text_box
-      .attr('y', bbox.y - padding_v / 2)
-      .attr('height', textHeight + padding_v)
+  
+  explainText = document.getElementById('explain-text');
 
+  const textBox = document.getElementById('text-box');
+  
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
+
+  // Set the text content
+  explainText.innerHTML = 'The AQI of the day is <b>136</b>, which is <b>Unhealthy for Sensitive Group!</b>.';
+  explainText.maxWidth = text_length+ 'px';
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '50%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
   d3.select('#bar_chart').select('svg').select('#circle_bar').remove()
   barwidth = 30
   barwidth_bar = 70
@@ -661,15 +782,33 @@ function stack(distance,info){
 
 function add_rosa(date,data,info){
   console.log("Explain: add_rosa")
-  explain_text
-  .text('We can further arrange the bars in to a circle by rounding the x-axis. Now the daily AQI is represented in the flower-like shape.')
-  .call(wrapText, text_length)
-  bbox = explain_text.node().getBBox();
-  textWidth = bbox.width;
-  textHeight = bbox.height;
-  text_box
-      .attr('y', bbox.y - padding_v / 2)
-      .attr('height', textHeight + padding_v)
+  
+  explainText = document.getElementById('explain-text');
+
+  const textBox = document.getElementById('text-box');
+  
+  const paddingH = 20; // Horizontal padding
+  const paddingV = 10; // Vertical padding
+
+  // Set the text content
+  explainText.innerHTML = 'We can further arrange the bars in to a circle by <b>rounding the x-axis</b>. Now the daily AQI is represented in the flower-like shape.';
+  explainText.maxWidth = text_length+ 'px';
+  // Get the dimensions of the text
+  const bbox = explainText.getBoundingClientRect();
+  const textWidth = bbox.width;
+  const textHeight = bbox.height;
+
+  // Set the dimensions and position of the bounding box
+  textBox.style.width = text_length+padding_text + 'px';
+  textBox.style.height = (textHeight + paddingV * 2) + 'px';
+  textBox.style.left = '52%';
+  textBox.style.top = '50%';
+  textBox.style.transform = 'translate(-50%, -50%)';
+
+  // Position the text within the bounding box
+  explainText.style.left = '50%';
+  explainText.style.top = '50%';
+  explainText.style.transform = 'translate(-50%, -50%)';
 
   function blinkBar(index,blinkCount) {
     blinkDuration = 500

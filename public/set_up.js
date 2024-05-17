@@ -919,14 +919,14 @@ function openOverlay(buttonText,info) {
   var overlayContent = document.getElementById('overlay-content1');
 
   // Set the content of the overlay based on the button's text
-  document.querySelector('#overlay-content1 h2').textContent = info.Full + ' ('+info.Name + ')';
-  document.getElementById('p-title').textContent = info.Full + ' ('+info.Name + ')';
-  document.getElementById('p-what').textContent = info.What;
-  document.getElementById('p-where').textContent = info.Where;
-  document.getElementById('p-how').textContent = info.Harm;
-  document.getElementById('illustration').src = 'illustration/'+info.Name+'.png'
-  document.getElementById('cause').src = 'illustration/cause/'+info.Name+'.png'
-  document.getElementById('harm').src = 'illustration/harm/'+info.Name+'.png'
+  document.querySelector('#overlay-content1 h2').innerHTML = info.Full + ' (' + info.Name + ')';
+  document.getElementById('p-title').innerHTML = info.Full + ' (' + info.Name + ')';
+  document.getElementById('p-what').innerHTML = info.What;
+  document.getElementById('p-where').innerHTML = info.Where;
+  document.getElementById('p-how').innerHTML = info.Harm;
+  document.getElementById('illustration').src = 'illustration/' + info.Name + '.png';
+  document.getElementById('cause').src = 'illustration/cause/' + info.Name + '.png';
+  document.getElementById('harm').src = 'illustration/harm/' + info.Name + '.png';
 
   // Show the overlay
   overlay.style.display = 'block';
