@@ -14,7 +14,7 @@ console.log = function(message, ...optionalParams) {
         body: JSON.stringify({message, optionalParams})
     });
 };
-let view_type = "gradient"
+let view_type = "types"
 let year_view_chart = "grid"
 let chart_type = "circular"
 function wrap(text, width) {
@@ -42,8 +42,37 @@ function wrap(text, width) {
       }
     });
   }
-
-let colorRanges = [
+let colorRanges1 = [
+  { threshold: 0, color: '#34B274' },
+  { threshold: 50, color: '#164d31' },
+  { threshold: 51, color: '#FDD000' },
+  { threshold: 100, color: '#806800' },
+  { threshold: 101, color: '#F4681A' },
+  { threshold: 150, color: '#80360e' },
+  { threshold: 151, color: '#D3112E' },
+  { threshold: 200, color: '#660816' },
+  { threshold: 201, color: '#8854D0' },
+  { threshold: 300, color: '#422966' },
+  { threshold: 301, color: '#731425' },
+  { threshold: 500, color: '#380a12' },
+  // ... Add other ranges here
+];
+let colorRanges2 = [
+    { threshold: 0, color: '#34B274' },
+    { threshold: 40, color: '#34B274' },
+    { threshold: 50, color: '#FDD000' },
+    { threshold: 90, color: '#FDD000' },
+    { threshold: 100, color: '#F4681A' },
+    { threshold: 140, color: '#F4681A' },
+    { threshold: 150, color: '#D3112E' },
+    { threshold: 190, color: '#D3112E' },
+    { threshold: 200, color: '#8854D0' },
+    { threshold: 280, color: '#8854D0' },
+    { threshold: 300, color: '#731425' },
+    { threshold: 500, color: '#731425' },
+    // ... Add other ranges here
+  ];
+  let colorRanges = [
     { threshold: 0, color: '#34B274' },
     { threshold: 30, color: '#34B274' },
     { threshold: 50, color: '#FDD000' },
@@ -58,6 +87,7 @@ let colorRanges = [
     { threshold: 500, color: '#731425' },
     // ... Add other ranges here
   ];
+
   // Create individual scales for each gradient range
 const scales = colorRanges.slice(0, -1).map((range, i) => {
     const nextRange = colorRanges[i + 1];

@@ -2,8 +2,9 @@ const csvFile1 = '2014-2023.csv';
 const csvFile2 = 'info.csv';
 const types = ['NO2','O3','CO','PM10','PM2.5','SO2']
 function getFormattedDateTime() {
-    const now = new Date();
-    now.setHours(now.getHours()-1); // Subtract one hour
+  var now = new Date();
+  now.setTime(now.getTime() - 1.5 * 60 * 60 * 1000); // Subtract 1.5 hours
+  
 
 
     const months = ["January", "February", "March", "April", "May", "June",
@@ -35,7 +36,8 @@ function getCurrentDate() {
 function getCurrentDateAndUTCHour() {
     // Create a new Date object for the current date and time
     var now = new Date();
-    now.setHours(now.getHours()-1); // Subtract one hour
+    now.setTime(now.getTime() - 1.5 * 60 * 60 * 1000); // Subtract 1.5 hours
+    
 
 
     // Fetch the year, month, and day
