@@ -233,6 +233,7 @@ color:black;
   justify-content: center; /* Horizontally center the content */
   align-items: center;     /* Vertically center the content */
   margin-top: -30px;
+  padding-bottom: 20px;
   width: 100%;             /* Ensure the header takes full width of its container */
   text-align: center;      /* Center text for any text directly inside the header */
 }
