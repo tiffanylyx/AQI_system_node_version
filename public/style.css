@@ -232,7 +232,7 @@ color:black;
   display: flex;
   justify-content: center; /* Horizontally center the content */
   align-items: center;     /* Vertically center the content */
-  padding: 20px;
+  margin-top: -30px;
   width: 100%;             /* Ensure the header takes full width of its container */
   text-align: center;      /* Center text for any text directly inside the header */
 }
@@ -274,6 +274,7 @@ color:black;
   overflow-y: auto; /* Enable vertical scrolling */
   overflow-x: hidden;
   padding-right:30px;
+  padding-top:-50px;
 }
 #calendar svg {
     display: block; /* SVG is block level, so it doesn't create extra space */
