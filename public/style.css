@@ -214,7 +214,6 @@ color:black;
 
 .left-div {
   width: 30%;
-  padding: 10px;
   box-sizing: border-box; /* Padding included in the width */
   position: relative;
   margin-right: 1%; /* Adjust the spacing as needed */
@@ -266,6 +265,7 @@ color:black;
   overflow-y: auto; /* Enable vertical scrolling */
   overflow-x: hidden;
   padding-right:30px;
+  margin-top: 25px;
 }
 #calendar {
 
@@ -577,6 +577,7 @@ p {
    .header-container {
     display: flex;
     align-items: center; /* Aligns the image and the text vertically */
+    padding-top: 0;
   }
   
   .header-container img {
