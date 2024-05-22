@@ -82,6 +82,8 @@ data.forEach(function(d) {
         create_year(data, info,select_year)
         d3.select(".year_view").style("display","none")
         d3.select("#color_bar").style("display","none")
+        document.getElementById('home').style.paddingTop = "50px";
+
     })
     if(view_type=="DP"){
       cards.style("fill", d => DP_fill(d[1].Type));
@@ -138,7 +140,8 @@ yAxis.selectAll("text")
       d3.select("#year-view-header").style("display","none")
       d3.select("#calendar").style("display","none")
       d3.select("#year_view").style("display","block")
-      d3.select("#color_bar").style("display","none")
+      d3.select("#color_bar").style("display","block")
+      document.getElementById('home').style.paddingTop = "100px";
 
     })
 
