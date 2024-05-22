@@ -237,3 +237,4 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (d<501){res = 200+(300-200)/2+(d-300)/4;}
     return res*1.3
   }
+

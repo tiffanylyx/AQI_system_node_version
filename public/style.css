@@ -169,7 +169,7 @@ color:black;
 .indicator {
   height: 15px;
   width: 15px;
-  border-radius: 50%;
+  border-radius: 25%;
   display: inline-block;
   position: absolute;
   left: 0;

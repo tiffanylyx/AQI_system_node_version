@@ -185,7 +185,6 @@ Promise.all([
 
   // Modified event listener for the next button
   document.getElementById('nextButton').addEventListener('click', () => {
-    console.log("Explain: Click next button")
     if (currentIndex < functionsArray.length - 1) { // Check if currentIndex is less than the last index
       currentIndex++;} // Increment currentIndex}
     else if (currentIndex==functionsArray.length-1){
@@ -213,7 +212,7 @@ Promise.all([
 })
 let explainText
 function raw_number(data,info){
-  console.log("Explain: raw_number")
+  console.log("Explain-Animation: raw_number")
   len = 8000
   barwidth = 160
   padding_bar = 120
@@ -302,7 +301,7 @@ function raw_number(data,info){
 }
 
 function create_number(date, data, info){
-  console.log("Explain: create_number")
+  console.log("Explain-Animation: create_number")
   raw_number(data,info)
   explainText = document.getElementById('explain-text');
 
@@ -356,7 +355,7 @@ function create_number(date, data, info){
 
 }
 function change_AQI(){
-  console.log("Explain: change_AQI")
+  console.log("Explain-Animation: change_AQI")
   
   explainText = document.getElementById('explain-text');
 
@@ -437,7 +436,7 @@ else{
   labels2.style('opacity',1).attr("fill", 'black')
 }
 function color_code(date, data, info){
-  console.log("Explain: color_code")
+  console.log("Explain-Animation: color_code")
   next = 0
   
   explainText = document.getElementById('explain-text');
@@ -493,7 +492,7 @@ function color_code(date, data, info){
     .attr("y",0)
 }
 function create_bar(date, data, info){
-  console.log("Explain: create_bar")
+  console.log("Explain-Animation: create_bar")
   back = 0
   
   explainText = document.getElementById('explain-text');
@@ -548,7 +547,7 @@ labels2
 info_group.selectAll("*").remove()
 }
 function move_bar(date, data, info,distance){
-console.log("Explain: move_bar")
+console.log("Explain-Animation: move_bar")
 explainText = document.getElementById('explain-text');
 
 const textBox = document.getElementById('text-box');
@@ -690,7 +689,7 @@ info_group
 }
 
 function stack(distance,info){
-  console.log("Explain: stack")
+  console.log("Explain-Animation: stack")
   back = 1
   
   
@@ -781,7 +780,7 @@ function stack(distance,info){
 }
 
 function add_rosa(date,data,info){
-  console.log("Explain: add_rosa")
+  console.log("Explain-Animation: add_rosa")
   
   explainText = document.getElementById('explain-text');
 
