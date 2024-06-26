@@ -1,3 +1,6 @@
+## May 22
+1. Add color legend
+
 ## May 20
 1. Update real-time data save
 
